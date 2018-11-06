@@ -211,6 +211,7 @@ _pkginfo.txt
 !*.[Cc]ache/
 
 # Others
+build/
 ClientBin/
 ~$*
 *~
