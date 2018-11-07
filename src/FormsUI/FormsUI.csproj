@@ -65,7 +65,34 @@
     <Compile Include="Extensions\ExternalResourceManager.cs" />
     <Compile Include="Extensions\IExtensionSettings.cs" />
     <Compile Include="Extensions\IResource.cs" />
+    <Compile Include="LengthyOperation.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="Disposer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wizards\IWizard.cs" />
+    <Compile Include="Wizards\IWizardModel.cs" />
+    <Compile Include="Wizards\IWizardPage.cs" />
+    <Compile Include="Wizards\Wizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizards\Wizard.Designer.cs">
+      <DependentUpon>Wizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\WizardPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\WizardPage.Designer.cs">
+      <DependentUpon>WizardPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\WizardPageBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\WizardPageBase.Designer.cs">
+      <DependentUpon>WizardPageBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\WizardPageDisplay.cs" />
+    <Compile Include="Wizards\WizardPageType.cs" />
     <Compile Include="Workspaces\IWorkspaceModel.cs" />
     <Compile Include="Workspaces\MostRecentlyUsedItem.cs" />
     <Compile Include="Workspaces\MostRecentlyUsedManager.cs" />
@@ -81,6 +108,12 @@
   <ItemGroup>
     <None Include="FormsUIKey.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Wizards\Wizard.resx">
+      <DependentUpon>Wizard.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
