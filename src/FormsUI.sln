@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Examples.Workspace"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wizard", "wizard", "{0FF07C08-B92A-4EA2-99AB-DE738EC32EB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Examples.Wizard", "..\examples\wizard\FormsUI.Examples.Wizard\FormsUI.Examples.Wizard.csproj", "{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{6D0B42D6-3C5E-4981-9D88-1740C5942F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D0B42D6-3C5E-4981-9D88-1740C5942F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D0B42D6-3C5E-4981-9D88-1740C5942F34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{5014E1F0-9D76-4386-9DF8-20427FE53233} = {98E5E2EE-3E1E-4666-A018-CEF88039BBA0}
 		{6D0B42D6-3C5E-4981-9D88-1740C5942F34} = {5014E1F0-9D76-4386-9DF8-20427FE53233}
 		{0FF07C08-B92A-4EA2-99AB-DE738EC32EB3} = {98E5E2EE-3E1E-4666-A018-CEF88039BBA0}
+		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D} = {0FF07C08-B92A-4EA2-99AB-DE738EC32EB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D71F081-926C-41AC-A1AE-A8C702C7523C}

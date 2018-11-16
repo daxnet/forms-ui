@@ -12,15 +12,8 @@ namespace FormsUI.Wizards
     /// </summary>
     public abstract partial class WizardPageBase : UserControl, IWizardPage
     {
+
         #region Private Fields
-
-        private readonly string description;
-
-        private readonly IWizardModel model;
-
-        private readonly string title;
-
-        private readonly Wizard wizard;
 
         private bool canGoCancel;
 
@@ -31,16 +24,6 @@ namespace FormsUI.Wizards
         private bool canGoPreviousPage;
 
         #endregion Private Fields
-
-        #region Public Events
-
-        /// <summary>
-        /// Occurs when the navigation states have been updated via <c> CanGoCancel </c>, <c>
-        /// CanGoFinishPage </c>, <c> CanGoNextPage </c> and <c> CanGoPreviousPage </c> properties.
-        /// </summary>
-        public event EventHandler NavigationStateUpdated;
-
-        #endregion Public Events
 
         #region Protected Constructors
 
@@ -65,8 +48,8 @@ namespace FormsUI.Wizards
         /// The <see cref="Wizard" /> instance which contains the current wizard page.
         /// </param>
         /// <param name="model"> The data model of the current wizard page. </param>
-        protected WizardPageBase(string title, string description, Wizard wizard, IWizardModel model)
-            : this(title, description, wizard, model, WizardPageType.Standard)
+        protected WizardPageBase(string title, string description, Wizard wizard)
+            : this(title, description, wizard, WizardPageType.Standard)
         { }
 
         /// <summary>
@@ -79,21 +62,28 @@ namespace FormsUI.Wizards
         /// </param>
         /// <param name="model"> The data model of the current wizard page. </param>
         /// <param name="type"> The type of the current wizard page. </param>
-        protected WizardPageBase(string title, string description, Wizard wizard, IWizardModel model, WizardPageType type)
+        protected WizardPageBase(string title, string description, Wizard wizard, WizardPageType type)
             : this()
         {
-            this.title = title;
-            this.description = description;
-            this.wizard = wizard;
-            this.model = model;
+            this.Title = title;
+            this.Description = description;
+            this.Wizard = wizard;
             this.Type = type;
         }
 
         #endregion Protected Constructors
 
-        #region Public Properties
+        #region Public Events
 
-        public abstract Guid PageId { get; }
+        /// <summary>
+        /// Occurs when the navigation states have been updated via <c> CanGoCancel </c>, <c>
+        /// CanGoFinishPage </c>, <c> CanGoNextPage </c> and <c> CanGoPreviousPage </c> properties.
+        /// </summary>
+        public event EventHandler NavigationStateUpdated;
+
+        #endregion Public Events
+
+        #region Public Properties
 
         /// <summary>
         /// Gets a value indicating whether the wizard operation can be canceled and the wizard
@@ -173,21 +163,9 @@ namespace FormsUI.Wizards
         /// </summary>
         /// <value> The description of the current wizard page. </value>
         [Browsable(false)]
-        public string Description
-        {
-            get { return this.description; }
-        }
+        public string Description { get; }
 
-        /// <summary>
-        /// Gets the data model of the wizard page.
-        /// </summary>
-        /// <value> The data model. </value>
-        [Browsable(false)]
-        public IWizardModel Model
-        {
-            get { return this.model; }
-        }
-
+        public abstract Guid PageId { get; }
         /// <summary>
         /// Gets the presentation of the wizard page. The presentation is a <see cref="UserControl"
         /// /> which can be designed in Windows Forms designer.
@@ -205,10 +183,7 @@ namespace FormsUI.Wizards
         /// </summary>
         /// <value> The title of the current wizard page. </value>
         [Browsable(false)]
-        public string Title
-        {
-            get { return this.title; }
-        }
+        public string Title { get; }
 
         /// <summary>
         /// Gets the type of the current wizard page.
@@ -226,10 +201,7 @@ namespace FormsUI.Wizards
         /// </summary>
         /// <value> The wizard that contains the current wizard page. </value>
         [Browsable(false)]
-        public Wizard Wizard
-        {
-            get { return this.wizard; }
-        }
+        public Wizard Wizard { get; }
 
         #endregion Public Properties
 
@@ -254,6 +226,8 @@ namespace FormsUI.Wizards
         #endregion Protected Internal Properties
 
         #region Protected Internal Methods
+
+        protected internal abstract Task ExecuteAfterShownAsync();
 
         /// <summary>
         /// The callback method being executed when user clicks the Finish button on the wizard,
@@ -281,45 +255,34 @@ namespace FormsUI.Wizards
         /// </summary>
         protected internal abstract Task ExecuteShowAsync(IWizardPage fromPage);
 
-        protected internal abstract Task ExecuteAfterShownAsync();
-
         /// <summary>
-        /// Persists the values on current wizard page to the data model.
+        /// The callback method being executed when the wizard is going to leave the current page.
         /// </summary>
-        protected internal abstract bool PersistValuesToModel();
+        /// <returns></returns>
+        protected internal abstract Task<bool> ExecuteBeforeLeavingAsync();
 
         #endregion Protected Internal Methods
 
         #region Protected Methods
 
         /// <summary>
-        /// Converts the data model of current page to a strongly typed value.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of the model to which the data model should be converted.
-        /// </typeparam>
-        /// <returns> The strongly typed data model. </returns>
-        protected T ModelAs<T>() where T : class, IWizardModel
-        {
-            return this.model as T;
-        }
-
-        /// <summary>
         /// Goes to the next page asynchronously.
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         protected async Task NextAsync()
         {
-            await wizard.GoNextPageAsync();
+            await Wizard.GoNextPageAsync();
         }
 
         /// <summary>
         /// Goes to the previous page asynchronously.
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         protected async Task PreviousAsync()
         {
-            await wizard.GoPreviousPageAsync();
+            await Wizard.GoPreviousPageAsync();
         }
 
         #endregion Protected Methods
@@ -336,5 +299,6 @@ namespace FormsUI.Wizards
         }
 
         #endregion Private Methods
+
     }
 }

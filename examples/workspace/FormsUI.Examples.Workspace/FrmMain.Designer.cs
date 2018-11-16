@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.mainMenu = new System.Windows.Forms.MenuStrip();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.txtMain = new System.Windows.Forms.TextBox();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,10 +39,13 @@
             this.mnuClose = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tbtnNew = new System.Windows.Forms.ToolStripButton();
             this.tbtnOpen = new System.Windows.Forms.ToolStripButton();
             this.tbtnSave = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.txtMain = new System.Windows.Forms.TextBox();
             this.mainMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -60,39 +60,6 @@
             this.mainMenu.Size = new System.Drawing.Size(790, 24);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "menuStrip1";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tbtnNew,
-            this.tbtnOpen,
-            this.tbtnSave});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(790, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 545);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(790, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // txtMain
-            // 
-            this.txtMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtMain.Location = new System.Drawing.Point(0, 49);
-            this.txtMain.Multiline = true;
-            this.txtMain.Name = "txtMain";
-            this.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMain.Size = new System.Drawing.Size(790, 496);
-            this.txtMain.TabIndex = 3;
-            this.txtMain.TextChanged += new System.EventHandler(this.txtMain_TextChanged);
             // 
             // mnuFile
             // 
@@ -176,6 +143,18 @@
             this.mnuExit.Size = new System.Drawing.Size(195, 22);
             this.mnuExit.Text = "&Exit";
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tbtnNew,
+            this.tbtnOpen,
+            this.tbtnSave});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(790, 25);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
             // tbtnNew
             // 
             this.tbtnNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -206,10 +185,32 @@
             this.tbtnSave.Text = "Save";
             this.tbtnSave.Click += new System.EventHandler(this.Action_Save);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 545);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(790, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // txtMain
+            // 
+            this.txtMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtMain.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMain.Location = new System.Drawing.Point(0, 49);
+            this.txtMain.Multiline = true;
+            this.txtMain.Name = "txtMain";
+            this.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtMain.Size = new System.Drawing.Size(790, 496);
+            this.txtMain.TabIndex = 3;
+            this.txtMain.TextChanged += new System.EventHandler(this.txtMain_TextChanged);
             // 
             // FrmMain
             // 

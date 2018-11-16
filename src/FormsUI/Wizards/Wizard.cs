@@ -19,15 +19,15 @@ namespace FormsUI.Wizards
     /// </remarks>
     public partial class Wizard : Form, IWizard
     {
+
         #region Private Fields
 
+        private readonly Guid initialPageId = Guid.Empty;
         private readonly Dictionary<string, object> parameters = new Dictionary<string, object>();
 
         private readonly List<Tuple<WizardPageBase, bool>> wizardPages = new List<Tuple<WizardPageBase, bool>>();
 
         private volatile int currentPageIndex = 0;
-
-        private readonly Guid initialPageId = Guid.Empty;
 
         #endregion Private Fields
 
@@ -105,17 +105,6 @@ namespace FormsUI.Wizards
         }
 
         /// <summary>
-        /// Gets a list of <see cref="IWizardModel" /> instances that represent the data model for
-        /// each wizard page in the wizard.
-        /// </summary>
-        /// <value> The list of <see cref="IWizardModel" /> instances. </value>
-        [Browsable(false)]
-        public IEnumerable<IWizardModel> Models
-        {
-            get { return this.wizardPages.Select(p => p.Item1.Model); }
-        }
-
-        /// <summary>
         /// Gets or sets the text for the Next button.
         /// </summary>
         /// <value>
@@ -128,6 +117,11 @@ namespace FormsUI.Wizards
             get { return this.btnNext.Text; }
             set { this.btnNext.Text = value; }
         }
+
+        /// <summary>
+        /// Gets the parameters of the wizard.
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, object>> Parameters => this.parameters;
 
         /// <summary>
         /// Gets or sets the text for the Previous button.
@@ -145,7 +139,7 @@ namespace FormsUI.Wizards
 
         #endregion Public Properties
 
-        #region Private Properties
+        #region Protected Properties
 
         protected WizardPageBase CurrentPage
         {
@@ -160,7 +154,7 @@ namespace FormsUI.Wizards
             }
         }
 
-        #endregion Private Properties
+        #endregion Protected Properties
 
         #region Public Methods
 
@@ -177,6 +171,13 @@ namespace FormsUI.Wizards
         }
 
         /// <summary>
+        /// Adds the parameter to the current wizard.
+        /// </summary>
+        /// <param name="parameterKey">The parameter key.</param>
+        /// <param name="parameterValue">The parameter value.</param>
+        public void AddParameter(string parameterKey, object parameterValue) => parameters.Add(parameterKey, parameterValue);
+
+        /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         public void Clear()
@@ -188,6 +189,10 @@ namespace FormsUI.Wizards
             this.wizardPages.Clear();
         }
 
+        /// <summary>
+        /// Clears the parameters.
+        /// </summary>
+        public void ClearParameters() => parameters.Clear();
         /// <summary>
         /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" />
         /// contains a specific value.
@@ -246,24 +251,15 @@ namespace FormsUI.Wizards
         }
 
         /// <summary>
-        /// Gets the data model from the wizard with specified model type.
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <typeparam name="T"> The <see cref="Type" /> of the model. </typeparam>
-        /// <returns> The data model for the particular wizard page. </returns>
-        public T GetWizardModel<T>() where T : class, IWizardModel
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            if (this.Count > 0)
-            {
-                foreach (var wizardPage in this)
-                {
-                    if (wizardPage.Model != null &&
-                        wizardPage.Model.GetType().Equals(typeof(T)))
-                    {
-                        return (T)wizardPage.Model;
-                    }
-                }
-            }
-            return null;
+            return this.wizardPages.GetEnumerator();
         }
 
         /// <summary>
@@ -276,9 +272,6 @@ namespace FormsUI.Wizards
 
         public T GetWizardParameter<T>(string parameterKey)
             => this.parameters.ContainsKey(parameterKey) ? (T)this.parameters[parameterKey] : default(T);
-
-        public void AddParameter(string parameterKey, object parameterValue) => parameters.Add(parameterKey, parameterValue);
-
         /// <summary>
         /// Removes the first occurrence of a specific object from the <see
         /// cref="T:System.Collections.Generic.ICollection`1" />.
@@ -337,18 +330,6 @@ namespace FormsUI.Wizards
             this.SetPageDisplay(index, display);
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate
-        /// through the collection.
-        /// </returns>
-        IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.wizardPages.GetEnumerator();
-        }
-
         #endregion Public Methods
 
         #region Internal Methods
@@ -366,6 +347,12 @@ namespace FormsUI.Wizards
                 {
                     return;
                 }
+
+                if (!await wizardPage.ExecuteBeforeLeavingAsync())
+                {
+                    return;
+                }
+
                 while (currentPageIndex < this.Count - 1)
                 {
                     currentPageIndex++;
@@ -395,6 +382,12 @@ namespace FormsUI.Wizards
                 {
                     return;
                 }
+
+                if (!await wizardPage.ExecuteBeforeLeavingAsync())
+                {
+                    return;
+                }
+
                 while (currentPageIndex > 0)
                 {
                     currentPageIndex--;
@@ -414,8 +407,6 @@ namespace FormsUI.Wizards
         #endregion Internal Methods
 
         #region Protected Methods
-
-        protected bool SaveModelOnCurrentPage() => this.CurrentPage.PersistValuesToModel();
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closed" /> event.
@@ -447,32 +438,17 @@ namespace FormsUI.Wizards
         {
             base.OnShown(e);
             var determinedPageIndex = DeterminePageIndex();
-            this.ShowWizardPage(determinedPageIndex);
-        }
-
-        private int DeterminePageIndex()
-        {
-            if (!this.initialPageId.Equals(Guid.Empty))
-            {
-                currentPageIndex = 0;
-                while (currentPageIndex < this.Count)
-                {
-                    var wizardPage = this.wizardPages[currentPageIndex].Item1;
-                    if (wizardPage.PageId.Equals(initialPageId))
-                    {
-                        var display = this.wizardPages[currentPageIndex].Item2;
-                        return display ? currentPageIndex : 0;
-                    }
-                    currentPageIndex++;
-                }
-            }
-
-            return 0;
+            ShowWizardPage(determinedPageIndex);
         }
 
         #endregion Protected Methods
 
         #region Private Methods
+
+        private async void btnBack_Click(object sender, EventArgs e)
+        {
+            await GoPreviousPageAsync();
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -502,11 +478,25 @@ namespace FormsUI.Wizards
             await GoNextPageAsync();
         }
 
-        private async void btnBack_Click(object sender, EventArgs e)
+        private int DeterminePageIndex()
         {
-            await GoPreviousPageAsync();
-        }
+            if (!this.initialPageId.Equals(Guid.Empty))
+            {
+                currentPageIndex = 0;
+                while (currentPageIndex < this.Count)
+                {
+                    var wizardPage = this.wizardPages[currentPageIndex].Item1;
+                    if (wizardPage.PageId.Equals(initialPageId))
+                    {
+                        var display = this.wizardPages[currentPageIndex].Item2;
+                        return display ? currentPageIndex : 0;
+                    }
+                    currentPageIndex++;
+                }
+            }
 
+            return 0;
+        }
         private void OnDispose(bool disposing)
         {
             this.Clear();
@@ -555,7 +545,11 @@ namespace FormsUI.Wizards
                 !(bool)e.Control.Tag &&
                 e.Control is WizardPageBase)
             {
-                (e.Control as WizardPageBase).PersistValuesToModel();
+                // Let the developer to override the BeforeLeavingAsync method
+                // to persist the wizard parameters, instead of using a control removing
+                // event to do the model persistence, which is error prone.
+
+                // (e.Control as WizardPageBase).PersistValuesToModel();
             }
         }
 
@@ -637,5 +631,6 @@ namespace FormsUI.Wizards
         }
 
         #endregion Private Methods
+
     }
 }

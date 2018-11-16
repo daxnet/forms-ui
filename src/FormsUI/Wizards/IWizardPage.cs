@@ -65,12 +65,6 @@ namespace FormsUI.Wizards
         string Description { get; }
 
         /// <summary>
-        /// Gets the data model of the wizard page.
-        /// </summary>
-        /// <value> The data model. </value>
-        IWizardModel Model { get; }
-
-        /// <summary>
         /// Gets the presentation of the wizard page. The presentation is a <see cref="UserControl"
         /// /> which can be designed in Windows Forms designer.
         /// </summary>
