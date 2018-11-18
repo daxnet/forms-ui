@@ -123,7 +123,7 @@
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnFinish
             // 
@@ -135,7 +135,7 @@
             this.btnFinish.TabIndex = 3;
             this.btnFinish.Text = "&Finish";
             this.btnFinish.UseVisualStyleBackColor = true;
-            this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
+            this.btnFinish.Click += new System.EventHandler(this.BtnFinish_Click);
             // 
             // btnNext
             // 
@@ -146,7 +146,7 @@
             this.btnNext.TabIndex = 2;
             this.btnNext.Text = "&Next";
             this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // btnBack
             // 
@@ -157,7 +157,7 @@
             this.btnBack.TabIndex = 1;
             this.btnBack.Text = "&Back";
             this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            this.btnBack.Click += new System.EventHandler(this.BtnBack_Click);
             // 
             // pnlContent
             // 
@@ -166,8 +166,8 @@
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(690, 289);
             this.pnlContent.TabIndex = 2;
-            this.pnlContent.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.pnlContent_ControlAdded);
-            this.pnlContent.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.pnlContent_ControlRemoved);
+            this.pnlContent.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.PnlContent_ControlAdded);
+            this.pnlContent.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.PnlContent_ControlRemoved);
             // 
             // Wizard
             // 

@@ -64,7 +64,8 @@ namespace FormsUI.Wizards
         /// </value>
         [Category("Wizard")]
         [Description("Gets or sets the text for the Cancel button.")]
-        public string CancelText
+        [DefaultValue("&Cancel")]
+        public string CancelButtonText
         {
             get { return this.btnCancel.Text; }
             set { this.btnCancel.Text = value; }
@@ -88,7 +89,8 @@ namespace FormsUI.Wizards
         /// </value>
         [Category("Wizard")]
         [Description("Gets or sets the text for the Finish button.")]
-        public string FinishText
+        [DefaultValue("&Finish")]
+        public string FinishButtonText
         {
             get { return this.btnFinish.Text; }
             set { this.btnFinish.Text = value; }
@@ -112,7 +114,8 @@ namespace FormsUI.Wizards
         /// </value>
         [Category("Wizard")]
         [Description("Gets or sets the text for the Next button.")]
-        public string NextText
+        [DefaultValue("&Next")]
+        public string NextButtonText
         {
             get { return this.btnNext.Text; }
             set { this.btnNext.Text = value; }
@@ -131,7 +134,8 @@ namespace FormsUI.Wizards
         /// </value>
         [Category("Wizard")]
         [Description("Gets or sets the text for the Previous button.")]
-        public string PreviousText
+        [DefaultValue("&Back")]
+        public string BackButtonText
         {
             get { return this.btnBack.Text; }
             set { this.btnBack.Text = value; }
@@ -175,7 +179,17 @@ namespace FormsUI.Wizards
         /// </summary>
         /// <param name="parameterKey">The parameter key.</param>
         /// <param name="parameterValue">The parameter value.</param>
-        public void AddParameter(string parameterKey, object parameterValue) => parameters.Add(parameterKey, parameterValue);
+        public void AddParameter(string parameterKey, object parameterValue)
+        {
+            if (parameters.ContainsKey(parameterKey))
+            {
+                parameters[parameterKey] = parameterValue;
+            }
+            else
+            {
+                parameters.Add(parameterKey, parameterValue);
+            }
+        }
 
         /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -257,7 +271,7 @@ namespace FormsUI.Wizards
         /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate
         /// through the collection.
         /// </returns>
-        IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return this.wizardPages.GetEnumerator();
         }
@@ -344,6 +358,11 @@ namespace FormsUI.Wizards
             {
                 var wizardPage = this.wizardPages[currentPageIndex].Item1;
                 if (!await wizardPage.ExecuteBeforeGoingNextAsync())
+                {
+                    return;
+                }
+
+                if (!await wizardPage.ValidateParametersAsync())
                 {
                     return;
                 }
@@ -445,18 +464,18 @@ namespace FormsUI.Wizards
 
         #region Private Methods
 
-        private async void btnBack_Click(object sender, EventArgs e)
+        private async void BtnBack_Click(object sender, EventArgs e)
         {
             await GoPreviousPageAsync();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             Close();
         }
 
-        private async void btnFinish_Click(object sender, EventArgs e)
+        private async void BtnFinish_Click(object sender, EventArgs e)
         {
             using (new LengthyOperation(this))
             {
@@ -473,7 +492,7 @@ namespace FormsUI.Wizards
             }
         }
 
-        private async void btnNext_Click(object sender, EventArgs e)
+        private async void BtnNext_Click(object sender, EventArgs e)
         {
             await GoNextPageAsync();
         }
@@ -502,7 +521,7 @@ namespace FormsUI.Wizards
             this.Clear();
         }
 
-        private void pnlContent_ControlAdded(object sender, ControlEventArgs e)
+        private void PnlContent_ControlAdded(object sender, ControlEventArgs e)
         {
             if (e.Control != null && e.Control is WizardPageBase)
             {
@@ -537,7 +556,7 @@ namespace FormsUI.Wizards
             }
         }
 
-        private void pnlContent_ControlRemoved(object sender, ControlEventArgs e)
+        private void PnlContent_ControlRemoved(object sender, ControlEventArgs e)
         {
             if (e.Control != null &&
                 e.Control.Tag != null &&

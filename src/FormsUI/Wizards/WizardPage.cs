@@ -158,6 +158,8 @@ namespace FormsUI.Wizards
         /// </summary>
         protected internal override Task ExecuteShowAsync(IWizardPage fromPage) => Task.CompletedTask;
 
+        protected internal override Task<bool> ValidateParametersAsync() => Task.FromResult(true);
+
         #endregion Protected Internal Methods
     }
 }

@@ -261,6 +261,12 @@ namespace FormsUI.Wizards
         /// <returns></returns>
         protected internal abstract Task<bool> ExecuteBeforeLeavingAsync();
 
+        /// <summary>
+        /// Validates the parameters on the current wizard page asynchronously.
+        /// </summary>
+        /// <returns>The validation results.</returns>
+        protected internal abstract Task<bool> ValidateParametersAsync();
+
         #endregion Protected Internal Methods
 
         #region Protected Methods

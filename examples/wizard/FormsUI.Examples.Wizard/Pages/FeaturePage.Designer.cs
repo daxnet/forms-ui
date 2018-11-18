@@ -33,8 +33,9 @@
             this.rbStandardInstall = new System.Windows.Forms.RadioButton();
             this.rbMinInstall = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtInstallDest = new System.Windows.Forms.TextBox();
             this.btnChoose = new System.Windows.Forms.Button();
+            this.txtInstallDest = new System.Windows.Forms.TextBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -99,15 +100,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Installation Destination";
             // 
-            // txtInstallDest
-            // 
-            this.txtInstallDest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInstallDest.Location = new System.Drawing.Point(6, 23);
-            this.txtInstallDest.Name = "txtInstallDest";
-            this.txtInstallDest.Size = new System.Drawing.Size(390, 20);
-            this.txtInstallDest.TabIndex = 0;
-            // 
             // btnChoose
             // 
             this.btnChoose.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -117,6 +109,16 @@
             this.btnChoose.TabIndex = 1;
             this.btnChoose.Text = "Choose...";
             this.btnChoose.UseVisualStyleBackColor = true;
+            this.btnChoose.Click += new System.EventHandler(this.btnChoose_Click);
+            // 
+            // txtInstallDest
+            // 
+            this.txtInstallDest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInstallDest.Location = new System.Drawing.Point(6, 23);
+            this.txtInstallDest.Name = "txtInstallDest";
+            this.txtInstallDest.Size = new System.Drawing.Size(390, 20);
+            this.txtInstallDest.TabIndex = 0;
             // 
             // FeaturePage
             // 
@@ -143,5 +145,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtInstallDest;
         private System.Windows.Forms.Button btnChoose;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }

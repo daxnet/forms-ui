@@ -33,7 +33,7 @@ namespace FormsUI.Examples.Wizard.Pages
             return base.ExecuteShowAsync(fromPage);
         }
 
-        protected override Task<bool> ExecuteBeforeLeavingAsync()
+        protected override Task<bool> ValidateParametersAsync()
         {
             if (string.IsNullOrEmpty(txtInstallDest.Text))
             {
@@ -47,8 +47,21 @@ namespace FormsUI.Examples.Wizard.Pages
                 return Task.FromResult(false);
             }
 
+            return base.ValidateParametersAsync();
+        }
+
+        protected override Task<bool> ExecuteBeforeLeavingAsync()
+        {
             Wizard.AddParameter("feature.install-destination", txtInstallDest.Text);
             return base.ExecuteBeforeLeavingAsync();
+        }
+
+        private void btnChoose_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtInstallDest.Text = folderBrowserDialog1.SelectedPath;
+            }
         }
     }
 }
