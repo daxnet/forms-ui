@@ -30,6 +30,21 @@ namespace FormsUI.Examples.Wizard.Pages
                 txtInstallDest.Text = installDestination;
             }
 
+            var feature = Wizard.GetWizardParameter<int?>("feature.feature");
+            if (!feature.HasValue)
+            {
+                feature = 1;
+                Wizard.AddParameter("feature.feature", feature.Value);
+            }
+
+            foreach (Control c in grpFeatureSelection.Controls)
+            {
+                if (c is RadioButton rb && Convert.ToInt32(rb.Tag) == feature.Value)
+                {
+                    rb.Checked = true;
+                }
+            }
+
             return base.ExecuteShowAsync(fromPage);
         }
 
@@ -53,6 +68,14 @@ namespace FormsUI.Examples.Wizard.Pages
         protected override Task<bool> ExecuteBeforeLeavingAsync()
         {
             Wizard.AddParameter("feature.install-destination", txtInstallDest.Text);
+            foreach (Control c in grpFeatureSelection.Controls)
+            {
+                if (c is RadioButton rb && rb.Checked)
+                {
+                    Wizard.AddParameter("feature.feature", Convert.ToInt32(rb.Tag));
+                }
+            }
+
             return base.ExecuteBeforeLeavingAsync();
         }
 

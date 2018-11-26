@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpFeatureSelection = new System.Windows.Forms.GroupBox();
             this.rbFullInstall = new System.Windows.Forms.RadioButton();
             this.rbStandardInstall = new System.Windows.Forms.RadioButton();
             this.rbMinInstall = new System.Windows.Forms.RadioButton();
@@ -36,23 +36,23 @@
             this.btnChoose = new System.Windows.Forms.Button();
             this.txtInstallDest = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox1.SuspendLayout();
+            this.grpFeatureSelection.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // grpFeatureSelection
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.grpFeatureSelection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.rbFullInstall);
-            this.groupBox1.Controls.Add(this.rbStandardInstall);
-            this.groupBox1.Controls.Add(this.rbMinInstall);
-            this.groupBox1.Location = new System.Drawing.Point(18, 19);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(498, 165);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Feature Selection";
+            this.grpFeatureSelection.Controls.Add(this.rbFullInstall);
+            this.grpFeatureSelection.Controls.Add(this.rbStandardInstall);
+            this.grpFeatureSelection.Controls.Add(this.rbMinInstall);
+            this.grpFeatureSelection.Location = new System.Drawing.Point(18, 19);
+            this.grpFeatureSelection.Name = "grpFeatureSelection";
+            this.grpFeatureSelection.Size = new System.Drawing.Size(498, 165);
+            this.grpFeatureSelection.TabIndex = 3;
+            this.grpFeatureSelection.TabStop = false;
+            this.grpFeatureSelection.Text = "Feature Selection";
             // 
             // rbFullInstall
             // 
@@ -62,6 +62,7 @@
             this.rbFullInstall.Size = new System.Drawing.Size(93, 17);
             this.rbFullInstall.TabIndex = 5;
             this.rbFullInstall.TabStop = true;
+            this.rbFullInstall.Tag = "3";
             this.rbFullInstall.Text = "Full installation";
             this.rbFullInstall.UseVisualStyleBackColor = true;
             // 
@@ -73,6 +74,7 @@
             this.rbStandardInstall.Size = new System.Drawing.Size(120, 17);
             this.rbStandardInstall.TabIndex = 4;
             this.rbStandardInstall.TabStop = true;
+            this.rbStandardInstall.Tag = "2";
             this.rbStandardInstall.Text = "Standard installation";
             this.rbStandardInstall.UseVisualStyleBackColor = true;
             // 
@@ -84,6 +86,7 @@
             this.rbMinInstall.Size = new System.Drawing.Size(112, 17);
             this.rbMinInstall.TabIndex = 3;
             this.rbMinInstall.TabStop = true;
+            this.rbMinInstall.Tag = "1";
             this.rbMinInstall.Text = "Minimal installation";
             this.rbMinInstall.UseVisualStyleBackColor = true;
             // 
@@ -125,11 +128,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.grpFeatureSelection);
             this.Name = "FeaturePage";
             this.Size = new System.Drawing.Size(535, 460);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpFeatureSelection.ResumeLayout(false);
+            this.grpFeatureSelection.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -138,7 +141,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpFeatureSelection;
         private System.Windows.Forms.RadioButton rbFullInstall;
         private System.Windows.Forms.RadioButton rbStandardInstall;
         private System.Windows.Forms.RadioButton rbMinInstall;

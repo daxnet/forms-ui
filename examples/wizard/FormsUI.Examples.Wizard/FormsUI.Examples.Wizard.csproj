@@ -76,6 +76,12 @@
     <Compile Include="Pages\LicensePage.Designer.cs">
       <DependentUpon>LicensePage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SummaryPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\SummaryPage.Designer.cs">
+      <DependentUpon>SummaryPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pages\WelcomePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\LicensePage.resx">
       <DependentUpon>LicensePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\SummaryPage.resx">
+      <DependentUpon>SummaryPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\WelcomePage.resx">
       <DependentUpon>WelcomePage.cs</DependentUpon>

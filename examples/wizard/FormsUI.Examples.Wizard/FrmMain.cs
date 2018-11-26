@@ -25,6 +25,7 @@ namespace FormsUI.Examples.Wizard
                 wizard.Add(wizard.CreatePage<WelcomePage>());
                 wizard.Add(wizard.CreatePage<LicensePage>());
                 wizard.Add(wizard.CreatePage<FeaturePage>());
+                wizard.Add(wizard.CreatePage<SummaryPage>());
                 wizard.Add(wizard.CreatePage<InstallationPage>());
                 wizard.ShowDialog();
             }
