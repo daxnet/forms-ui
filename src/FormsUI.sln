@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI", "FormsUI\FormsUI.csproj", "{6ECE3042-DA41-4D80-8F80-AA6D2F0A96E2}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wizard", "wizard", "{0FF07C08-B92A-4EA2-99AB-DE738EC32EB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Examples.Wizard", "..\examples\wizard\FormsUI.Examples.Wizard\FormsUI.Examples.Wizard.csproj", "{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Windows", "FormsUI.Windows\FormsUI.Windows.csproj", "{D910E12B-0973-4CBB-8C29-8FBD77AB239F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
