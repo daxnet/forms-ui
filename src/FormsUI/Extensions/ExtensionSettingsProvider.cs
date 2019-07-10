@@ -1,8 +1,8 @@
 ﻿
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace FormsUI.Extensions
 {
@@ -11,7 +11,6 @@ namespace FormsUI.Extensions
     /// </summary>
     public abstract class ExtensionSettingsProvider
     {
-
         #region Private Fields
 
         private const string SettingsFolder = "settings";
@@ -231,7 +230,7 @@ namespace FormsUI.Extensions
 
         #region Private Methods
 
-        private static string GetExtensionSettingsFileName(Extension extension) => Path.Combine(ExtensionSettingsPath, string.Format("{0}.setting.json", extension.Id.ToString().Replace('-', '_').ToUpper()));
+        private static string GetExtensionSettingsFileName(Extension extension) => Path.Combine(ExtensionSettingsPath, string.Format("{0}.settings.xml", extension.Id.ToString().Replace('-', '_').ToUpper()));
 
         private static IExtensionSettings ReadSettings(Extension extension, Type settingsType)
         {
@@ -246,15 +245,21 @@ namespace FormsUI.Extensions
                 return null;
             }
 
-            var settingsJson = File.ReadAllText(settingsFile);
-            return (IExtensionSettings)JsonConvert.DeserializeObject(settingsJson, settingsType);
+            var xmlSerializer = new XmlSerializer(settingsType);
+            using (var fileStream = new FileStream(settingsFile, FileMode.Open, FileAccess.Read))
+            {
+                return (IExtensionSettings)xmlSerializer.Deserialize(fileStream);
+            }
         }
 
         private static void WriteSettings(Extension extension, object settings)
         {
             var settingsFile = GetExtensionSettingsFileName(extension);
-            var settingsJson = JsonConvert.SerializeObject(settings);
-            File.WriteAllText(settingsFile, settingsJson);
+            var xmlSerializer = new XmlSerializer(settings.GetType());
+            using (var fileStream = new FileStream(settingsFile, FileMode.Open, FileAccess.Read))
+            {
+                xmlSerializer.Serialize(fileStream, settings);
+            }
         }
 
         #endregion Private Methods
