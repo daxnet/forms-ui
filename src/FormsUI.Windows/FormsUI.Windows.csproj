@@ -52,6 +52,11 @@
     <Compile Include="BaseChildWindow.Designer.cs">
       <DependentUpon>BaseChildWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ComponentManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IChildWindow.cs" />
+    <Compile Include="MenuStripMerge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolStripMerge.cs" />
   </ItemGroup>
