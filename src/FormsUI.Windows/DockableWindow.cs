@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FormsUI.Workspaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,14 +12,16 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
-    public partial class BaseChildWindow : DockContent
+    public partial class DockableWindow<TWorkspaceModel> : DockContent
+        where TWorkspaceModel : IWorkspaceModel
     {
-        protected BaseChildWindow(bool hideOnClose = true)
+        protected DockableWindow(IAppWindow<TWorkspaceModel> appWindow, bool hideOnClose = true)
         {
             HideOnClose = hideOnClose;
+            AppWindow = appWindow;
         }
 
-        private BaseChildWindow()
+        private DockableWindow()
         {
             InitializeComponent();
         }
@@ -26,6 +29,8 @@ namespace FormsUI.Windows
         public event EventHandler DockWindowHidden;
 
         public event EventHandler DockWindowShown;
+
+        protected IAppWindow<TWorkspaceModel> AppWindow;
 
         public override string ToString() => Text;
 

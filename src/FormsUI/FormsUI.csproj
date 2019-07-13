@@ -52,6 +52,9 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ComponentManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TextBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FormsUI.Windows
+namespace FormsUI
 {
     /// <summary>
     /// Represents the component managers that manage component lifetime.
