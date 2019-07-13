@@ -18,5 +18,7 @@ namespace FormsUI.Windows
         where TWorkspaceModel : IWorkspaceModel
     {
         Workspace<TWorkspaceModel> Workspace { get; }
+
+        DockableWindowManager<TWorkspaceModel> WindowManager { get; }
     }
 }

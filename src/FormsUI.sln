@@ -23,7 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Examples.Wizard", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Windows", "FormsUI.Windows\FormsUI.Windows.csproj", "{D910E12B-0973-4CBB-8C29-8FBD77AB239F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{84E85D20-DC59-4725-8CF7-3088F0686B8F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dockable-windows", "dockable-windows", "{84E85D20-DC59-4725-8CF7-3088F0686B8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsUI.Examples.DockableWindows", "..\examples\dockable-windows\FormsUI.Examples.DockableWindows\FormsUI.Examples.DockableWindows.csproj", "{C8845261-04E3-4A2C-8E15-F5D65432A7BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D910E12B-0973-4CBB-8C29-8FBD77AB239F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8845261-04E3-4A2C-8E15-F5D65432A7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8845261-04E3-4A2C-8E15-F5D65432A7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8845261-04E3-4A2C-8E15-F5D65432A7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8845261-04E3-4A2C-8E15-F5D65432A7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{0FF07C08-B92A-4EA2-99AB-DE738EC32EB3} = {98E5E2EE-3E1E-4666-A018-CEF88039BBA0}
 		{68BF6FF1-5C49-4F56-AC57-8F3A39A1AD2D} = {0FF07C08-B92A-4EA2-99AB-DE738EC32EB3}
 		{84E85D20-DC59-4725-8CF7-3088F0686B8F} = {98E5E2EE-3E1E-4666-A018-CEF88039BBA0}
+		{C8845261-04E3-4A2C-8E15-F5D65432A7BC} = {84E85D20-DC59-4725-8CF7-3088F0686B8F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D71F081-926C-41AC-A1AE-A8C702C7523C}

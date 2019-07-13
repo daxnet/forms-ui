@@ -73,7 +73,7 @@ namespace FormsUI.Windows
                 parms.AddRange(args);
             }
 
-            var dockableWindow = (TDockableWindow)Activator.CreateInstance(typeof(TDockableWindow), parms);
+            var dockableWindow = (TDockableWindow)Activator.CreateInstance(typeof(TDockableWindow), parms.ToArray());
             dockableWindow.DockWindowShown += DockableWindow_DockWindowShown;
             dockableWindow.DockWindowHidden += DockableWindow_DockWindowHidden;
             dockableWindow.FormClosed += DockableWindow_FormClosed;

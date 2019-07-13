@@ -21,7 +21,7 @@ namespace FormsUI.Windows
             AppWindow = appWindow;
         }
 
-        private DockableWindow()
+        protected DockableWindow()
         {
             InitializeComponent();
         }
@@ -30,7 +30,7 @@ namespace FormsUI.Windows
 
         public event EventHandler DockWindowShown;
 
-        protected IAppWindow<TWorkspaceModel> AppWindow;
+        protected IAppWindow<TWorkspaceModel> AppWindow { get; }
 
         public override string ToString() => Text;
 

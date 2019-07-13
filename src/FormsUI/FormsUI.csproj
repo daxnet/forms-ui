@@ -69,6 +69,7 @@
     <Compile Include="Extensions\IExtensionSettings.cs" />
     <Compile Include="Extensions\IResource.cs" />
     <Compile Include="LengthyOperation.cs" />
+    <Compile Include="PropertyChangedNotifier.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Disposer.cs">
       <SubType>Component</SubType>

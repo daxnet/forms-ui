@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
-    public abstract partial class AppWindow<TWorkspaceModel> : Form, IAppWindow<TWorkspaceModel>
+    public partial class AppWindow<TWorkspaceModel> : Form, IAppWindow<TWorkspaceModel>
         where TWorkspaceModel : IWorkspaceModel
     {
 
@@ -21,15 +22,30 @@ namespace FormsUI.Windows
         {
             InitializeComponent();
 
+            IsMdiContainer = true;
+
             #region Initialize Workspace
             Workspace = CreateWorkspace();
-            Workspace.WorkspaceChanged += OnWorkspaceChanged;
-            Workspace.WorkspaceClosed += OnWorkspaceClosed;
-            Workspace.WorkspaceCreated += OnWorkspaceCreated;
-            Workspace.WorkspaceOpened += OnWorkspaceOpened;
-            Workspace.WorkspaceSaved += OnWorkspaceSaved;
+            if (Workspace != null)
+            {
+                Workspace.WorkspaceChanged += OnWorkspaceChanged;
+                Workspace.WorkspaceClosed += OnWorkspaceClosed;
+                Workspace.WorkspaceCreated += OnWorkspaceCreated;
+                Workspace.WorkspaceOpened += OnWorkspaceOpened;
+                Workspace.WorkspaceSaved += OnWorkspaceSaved;
+            }
+            #endregion
+
+            #region Initialize Window Manager
+            WindowManager = new DockableWindowManager<TWorkspaceModel>(this);
+            WindowManager.WindowHidden += OnWindowHidden;
+            WindowManager.WindowShown += OnWindowShown;
             #endregion
         }
+
+        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs<TWorkspaceModel> e) { }
+
+        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs<TWorkspaceModel> e) { }
 
         #endregion Public Constructors
 
@@ -37,21 +53,33 @@ namespace FormsUI.Windows
 
         public Workspace<TWorkspaceModel> Workspace { get; }
 
+        public DockableWindowManager<TWorkspaceModel> WindowManager { get; }
+
         #endregion Public Properties
 
         #region Protected Methods
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            Workspace.WorkspaceChanged -= OnWorkspaceChanged;
-            Workspace.WorkspaceClosed -= OnWorkspaceClosed;
-            Workspace.WorkspaceCreated -= OnWorkspaceCreated;
-            Workspace.WorkspaceOpened -= OnWorkspaceOpened;
-            Workspace.WorkspaceSaved -= OnWorkspaceSaved;
+            if (Workspace != null)
+            {
+                Workspace.WorkspaceChanged -= OnWorkspaceChanged;
+                Workspace.WorkspaceClosed -= OnWorkspaceClosed;
+                Workspace.WorkspaceCreated -= OnWorkspaceCreated;
+                Workspace.WorkspaceOpened -= OnWorkspaceOpened;
+                Workspace.WorkspaceSaved -= OnWorkspaceSaved;
+            }
+
+            WindowManager.WindowHidden -= OnWindowHidden;
+            WindowManager.WindowShown -= OnWindowShown;
+            WindowManager.Dispose();
+
             base.OnFormClosed(e);
         }
 
-        protected abstract Workspace<TWorkspaceModel> CreateWorkspace();
+        protected virtual Workspace<TWorkspaceModel> CreateWorkspace() => null;
+
+        protected virtual DockPanel DockArea { get; } = null;
 
         protected virtual void OnWorkspaceChanged(object sender, EventArgs e) { }
 
@@ -63,7 +91,56 @@ namespace FormsUI.Windows
 
         protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs<TWorkspaceModel> e) { }
 
+        protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems, DockState dockState, bool show = true, Action<TToolWindow> registeredCallback = null)
+            where TToolWindow : DockableWindow<TWorkspaceModel>
+        {
+            var toolWindow = WindowManager.GetWindows<TToolWindow>().FirstOrDefault();
+            if (toolWindow == null)
+            {
+                toolWindow = WindowManager.CreateWindow<TToolWindow>();
+                if (DockArea != null)
+                {
+                    if (dockState != DockState.Hidden &&
+                        dockState != DockState.Unknown && dockState != DockState.Hidden)
+                    {
+                        toolWindow.Show(DockArea, dockState);
+                        if (!show)
+                        {
+                            toolWindow.Hide();
+                        }
+                    }
+                }
+
+                foreach (var toolStripItem in toolStripItems)
+                {
+                    toolStripItem.Tag = typeof(TToolWindow);
+                    toolStripItem.Click += ToggleToolWindowAction;
+                }
+
+                registeredCallback?.Invoke(toolWindow);
+            }
+        }
+
         #endregion Protected Methods
 
+        private void ToggleToolWindowAction(object sender, EventArgs e)
+        {
+            if (sender is ToolStripItem tsi &&
+                tsi.Tag is Type windowType)
+            {
+                var windows = WindowManager.GetWindows(windowType);
+                foreach (var window in windows)
+                {
+                    if (window.DockState == DockState.Hidden)
+                    {
+                        window.Show();
+                    }
+                    else
+                    {
+                        window.Hide();
+                    }
+                }
+            }
+        }
     }
 }
