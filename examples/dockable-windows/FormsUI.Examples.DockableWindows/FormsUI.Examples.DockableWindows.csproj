@@ -74,6 +74,8 @@
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteEditorModel.cs" />
+    <Compile Include="Models\NoteEditorWorkspace.cs" />
     <Compile Include="NoteListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
