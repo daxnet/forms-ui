@@ -187,11 +187,16 @@ namespace FormsUI.Workspaces
         /// Creates a new workspace. If there is any active workspace, it will be closed before the new
         /// workspace is going to be created.
         /// </summary>
+        /// <param name="enricher">The callback function that enriches the created workspace model.</param>
         /// <returns>True if the workspace has been created successfully, otherwise, false.</returns>
-        public bool New()
+        public bool New(WorkspaceModelEnricher enricher = null)
         {
             // Creates the instance of the workspace model.
-            var creatingModel = Create();
+            var (succeeded, creatingModel) = CreateInternal(enricher);
+            if (!succeeded)
+            {
+                return false;
+            }
 
             // If the workspace model instance has been created successfully and there is no active workspace,
             // or the active workspace has been closed successfully, assign the newly created workspace instance
@@ -320,6 +325,17 @@ namespace FormsUI.Workspaces
         #endregion Public Methods
 
         #region Protected Methods
+
+        private (bool, IWorkspaceModel) CreateInternal(WorkspaceModelEnricher enricher = null)
+        {
+            var model = Create();
+            if (enricher != null)
+            {
+                return enricher(model);
+            }
+
+            return (true, model);
+        }
 
         /// <summary>
         /// Creates the workspace.

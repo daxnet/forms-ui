@@ -29,15 +29,20 @@ namespace FormsUI.Examples.DockableWindows
 
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
-            var editorWindow = WindowManager.CreateWindow<EditorWindow>();
-            editorWindow.Show(dockPanel, DockState.Document);
+            //var editorWindow = WindowManager.CreateWindow<EditorWindow>();
+            //editorWindow.Show(dockPanel, DockState.Document);
         }
 
         private void Action_New(object sender, EventArgs e)
         {
             using (new LengthyOperation(this))
             {
-                Workspace.New();
+                Workspace.New(model =>
+                {
+                    var noteEditorModel = model as NoteEditorModel;
+                    noteEditorModel.Add(new Note { Title = "Note1", Content = string.Empty });
+                    return (true, noteEditorModel);
+                });
             }
         }
 

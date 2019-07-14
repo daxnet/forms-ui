@@ -20,5 +20,13 @@ namespace FormsUI.Examples.DockableWindows.Models
             BindObservableCollection(notes);
         }
 
+        public void Add(Note note)
+        {
+            notes.Add(note);
+        }
+
+        public int Count => notes.Count;
+
+        public IEnumerable<Note> Notes => notes;
     }
 }

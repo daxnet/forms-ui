@@ -1,4 +1,5 @@
-﻿using FormsUI.Windows;
+﻿using FormsUI.Examples.DockableWindows.Models;
+using FormsUI.Windows;
 using FormsUI.Workspaces;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,20 @@ namespace FormsUI.Examples.DockableWindows
 
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
-            base.OnWorkspaceCreated(sender, e);
+            var noteEditorModel = e.Model as NoteEditorModel;
+            if (noteEditorModel.Count > 0)
+            {
+                lst.Items.Clear();
+                foreach (var note in noteEditorModel.Notes)
+                {
+                    lst.Items.Add(note.Title);
+                }
+            }
+        }
+
+        protected override void OnWorkspaceClosed(object sender, EventArgs e)
+        {
+            lst.Items.Clear();
         }
     }
 }
