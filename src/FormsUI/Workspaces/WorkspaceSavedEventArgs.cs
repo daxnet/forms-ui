@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace FormsUI.Workspaces
 {
-    public sealed class WorkspaceSavedEventArgs<TModel> : WorkspaceEventArgs<TModel>
-        where TModel : INotifyPropertyChanged
+    public sealed class WorkspaceSavedEventArgs : WorkspaceEventArgs
     {
-        public WorkspaceSavedEventArgs(string fileName, TModel model) : base(fileName, model)
+        public WorkspaceSavedEventArgs(string fileName, IWorkspaceModel model) : base(fileName, model)
         {
         }
     }

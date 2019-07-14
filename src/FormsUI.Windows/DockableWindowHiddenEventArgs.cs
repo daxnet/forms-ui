@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace FormsUI.Windows
 {
-    public sealed class DockableWindowHiddenEventArgs<TWorkspaceModel> : DockableWindowEventArgs<TWorkspaceModel>
-        where TWorkspaceModel : IWorkspaceModel
-    {
-        public DockableWindowHiddenEventArgs(DockableWindow<TWorkspaceModel> dockableWindow) : base(dockableWindow)
+    public sealed class DockableWindowHiddenEventArgs : DockableWindowEventArgs
+    { 
+        public DockableWindowHiddenEventArgs(DockableWindow dockableWindow) : base(dockableWindow)
         {
         }
     }

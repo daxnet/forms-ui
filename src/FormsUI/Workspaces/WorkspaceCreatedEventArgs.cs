@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace FormsUI.Workspaces
 {
-    public sealed class WorkspaceCreatedEventArgs<TModel> : EventArgs
-        where TModel : INotifyPropertyChanged
+    public sealed class WorkspaceCreatedEventArgs : EventArgs
     {
-        public WorkspaceCreatedEventArgs(TModel model)
+        public WorkspaceCreatedEventArgs(IWorkspaceModel model)
         {
             this.Model = model;
         }
 
-        public TModel Model { get; }
+        public IWorkspaceModel Model { get; }
     }
 }

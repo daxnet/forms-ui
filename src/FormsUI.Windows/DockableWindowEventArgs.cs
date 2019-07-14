@@ -11,14 +11,13 @@ namespace FormsUI.Windows
     /// Represents the base class of the event data that holds an instance
     /// of a dockable window.
     /// </summary>
-    public abstract class DockableWindowEventArgs<TWorkspaceModel>
-        where TWorkspaceModel : IWorkspaceModel
+    public abstract class DockableWindowEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DockableWindowEventArgs"/> class.
         /// </summary>
         /// <param name="dockableWindow">The dockable window.</param>
-        protected DockableWindowEventArgs(DockableWindow<TWorkspaceModel> dockableWindow)
+        protected DockableWindowEventArgs(DockableWindow dockableWindow)
         {
             DockableWindow = dockableWindow;
         }
@@ -29,6 +28,6 @@ namespace FormsUI.Windows
         /// <value>
         /// The dockable window.
         /// </value>
-        public DockableWindow<TWorkspaceModel> DockableWindow { get; }
+        public DockableWindow DockableWindow { get; }
     }
 }

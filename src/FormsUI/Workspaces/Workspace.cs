@@ -9,8 +9,7 @@ namespace FormsUI.Workspaces
     /// Represents the workspace in a Windows Forms application.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    public abstract class Workspace<TModel>
-        where TModel : IWorkspaceModel
+    public abstract class Workspace
     {
 
         #region Private Fields
@@ -19,17 +18,6 @@ namespace FormsUI.Workspaces
         private string workspaceFileName;
 
         #endregion Private Fields
-
-        #region Protected Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Workspace{TModel}"/> class.
-        /// </summary>
-        protected Workspace()
-        {
-        }
-
-        #endregion Protected Constructors
 
         #region Public Events
 
@@ -46,19 +34,30 @@ namespace FormsUI.Workspaces
         /// <summary>
         /// Occurs when a new workspace has been created.
         /// </summary>
-        public event EventHandler<WorkspaceCreatedEventArgs<TModel>> WorkspaceCreated;
+        public event EventHandler<WorkspaceCreatedEventArgs> WorkspaceCreated;
 
         /// <summary>
         /// Occurs when the workspace has been opened.
         /// </summary>
-        public event EventHandler<WorkspaceOpenedEventArgs<TModel>> WorkspaceOpened;
+        public event EventHandler<WorkspaceOpenedEventArgs> WorkspaceOpened;
 
         /// <summary>
         /// Occurs when the workspace has been saved.
         /// </summary>
-        public event EventHandler<WorkspaceSavedEventArgs<TModel>> WorkspaceSaved;
+        public event EventHandler<WorkspaceSavedEventArgs> WorkspaceSaved;
 
         #endregion Public Events
+
+        #region Protected Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Workspace"/> class.
+        /// </summary>
+        protected Workspace()
+        {
+        }
+
+        #endregion Protected Constructors
 
         #region Public Properties
 
@@ -94,7 +93,7 @@ namespace FormsUI.Workspaces
         /// <value>
         /// The model instance of the workspace.
         /// </value>
-        public TModel Model { get; private set; }
+        public IWorkspaceModel Model { get; private set; }
 
         #endregion Public Properties
 
@@ -110,9 +109,9 @@ namespace FormsUI.Workspaces
         {
             get
             {
-                if (typeof(TModel).IsDefined(typeof(WorkspaceModelVersionAttribute), false))
+                if (Model?.GetType().IsDefined(typeof(WorkspaceModelVersionAttribute), false) ?? false)
                 {
-                    return typeof(TModel).GetCustomAttribute<WorkspaceModelVersionAttribute>().Version;
+                    return Model?.GetType().GetCustomAttribute<WorkspaceModelVersionAttribute>().Version;
                 }
 
                 return WorkspaceModelVersion.One;
@@ -206,7 +205,7 @@ namespace FormsUI.Workspaces
                       this.OnWorkspaceChanged(EventArgs.Empty);
                   };
 
-                this.OnWorkspaceCreated(new WorkspaceCreatedEventArgs<TModel>(this.Model));
+                this.OnWorkspaceCreated(new WorkspaceCreatedEventArgs(this.Model));
                 this.OnWorkspaceChanged(EventArgs.Empty);
 
                 this.closed = false;
@@ -261,7 +260,7 @@ namespace FormsUI.Workspaces
             };
 
             this.workspaceFileName = fileName;
-            this.OnWorkspaceOpened(new WorkspaceOpenedEventArgs<TModel>(fileName, this.Model));
+            this.OnWorkspaceOpened(new WorkspaceOpenedEventArgs(fileName, this.Model));
             this.closed = false;
             return true;
         }
@@ -278,7 +277,7 @@ namespace FormsUI.Workspaces
                 try
                 {
                     this.SaveToFile(this.Model, workspaceFileName);
-                    this.OnWorkspaceSaved(new WorkspaceSavedEventArgs<TModel>(workspaceFileName, this.Model));
+                    this.OnWorkspaceSaved(new WorkspaceSavedEventArgs(workspaceFileName, this.Model));
                     return true;
                 }
                 catch
@@ -301,7 +300,7 @@ namespace FormsUI.Workspaces
                         try
                         {
                             this.SaveToFile(this.Model, saveFileDialog.FileName);
-                            this.OnWorkspaceSaved(new WorkspaceSavedEventArgs<TModel>(saveFileDialog.FileName, this.Model));
+                            this.OnWorkspaceSaved(new WorkspaceSavedEventArgs(saveFileDialog.FileName, this.Model));
                             this.workspaceFileName = saveFileDialog.FileName;
                             return true;
                         }
@@ -326,7 +325,7 @@ namespace FormsUI.Workspaces
         /// Creates the workspace.
         /// </summary>
         /// <returns>The workspace model that was created.</returns>
-        protected abstract TModel Create();
+        protected abstract IWorkspaceModel Create();
 
         /// <summary>
         /// Raises the <see cref="E:WorkspaceChanged" /> event.
@@ -354,7 +353,7 @@ namespace FormsUI.Workspaces
         /// Raises the <see cref="E:WorkspaceCreated" /> event.
         /// </summary>
         /// <param name="e">The <see cref="WorkspaceCreatedEventArgs{TModel}"/> instance containing the event data.</param>
-        protected virtual void OnWorkspaceCreated(WorkspaceCreatedEventArgs<TModel> e)
+        protected virtual void OnWorkspaceCreated(WorkspaceCreatedEventArgs e)
         {
             this.WorkspaceCreated?.Invoke(this, e);
             HasChanged = true;
@@ -364,7 +363,7 @@ namespace FormsUI.Workspaces
         /// Raises the <see cref="E:WorkspaceOpened" /> event.
         /// </summary>
         /// <param name="e">The <see cref="WorkspaceOpenedEventArgs{TModel}"/> instance containing the event data.</param>
-        protected virtual void OnWorkspaceOpened(WorkspaceOpenedEventArgs<TModel> e)
+        protected virtual void OnWorkspaceOpened(WorkspaceOpenedEventArgs e)
         {
             this.WorkspaceOpened?.Invoke(this, e);
             // changed = false;
@@ -374,7 +373,7 @@ namespace FormsUI.Workspaces
         /// Raises the <see cref="E:WorkspaceSaved" /> event.
         /// </summary>
         /// <param name="e">The <see cref="WorkspaceSavedEventArgs{TModel}"/> instance containing the event data.</param>
-        protected virtual void OnWorkspaceSaved(WorkspaceSavedEventArgs<TModel> e)
+        protected virtual void OnWorkspaceSaved(WorkspaceSavedEventArgs e)
         {
             this.WorkspaceSaved?.Invoke(this, e);
             HasChanged = false;
@@ -385,14 +384,14 @@ namespace FormsUI.Workspaces
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns>The workspace model that was opened from the specified file.</returns>
-        protected abstract TModel OpenFromFile(string fileName);
+        protected abstract IWorkspaceModel OpenFromFile(string fileName);
 
         /// <summary>
         /// Saves the given workspace model to the file.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="fileName">Name of the file.</param>
-        protected abstract void SaveToFile(TModel model, string fileName);
+        protected abstract void SaveToFile(IWorkspaceModel model, string fileName);
 
         #endregion Protected Methods
 

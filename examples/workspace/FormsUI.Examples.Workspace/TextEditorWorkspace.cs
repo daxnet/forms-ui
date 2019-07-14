@@ -8,25 +8,28 @@ using System.Threading.Tasks;
 
 namespace FormsUI.Examples.Workspace
 {
-    public sealed class TextEditorWorkspace : Workspace<TextEditorModel>
+    public sealed class TextEditorWorkspace : Workspaces.Workspace
     {
         protected override string WorkspaceFileDescription => "Text Files";
 
         protected override string WorkspaceFileExtension => "txt";
 
-        protected override TextEditorModel Create()
+        protected override IWorkspaceModel Create()
         {
             return new TextEditorModel();
         }
 
-        protected override TextEditorModel OpenFromFile(string fileName)
+        protected override IWorkspaceModel OpenFromFile(string fileName)
         {
             return new TextEditorModel(File.ReadAllText(fileName));
         }
 
-        protected override void SaveToFile(TextEditorModel model, string fileName)
+        protected override void SaveToFile(IWorkspaceModel model, string fileName)
         {
-            File.WriteAllText(fileName, model.Text);
+            if (model is TextEditorModel textEditorModel)
+            {
+                File.WriteAllText(fileName, textEditorModel.Text);
+            }
         }
     }
 }

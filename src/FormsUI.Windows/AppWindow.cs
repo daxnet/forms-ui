@@ -12,8 +12,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
-    public partial class AppWindow<TWorkspaceModel> : Form, IAppWindow<TWorkspaceModel>
-        where TWorkspaceModel : IWorkspaceModel
+    public partial class AppWindow : Form, IAppWindow
     {
 
         #region Public Constructors
@@ -37,23 +36,23 @@ namespace FormsUI.Windows
             #endregion
 
             #region Initialize Window Manager
-            WindowManager = new DockableWindowManager<TWorkspaceModel>(this);
+            WindowManager = new DockableWindowManager(this);
             WindowManager.WindowHidden += OnWindowHidden;
             WindowManager.WindowShown += OnWindowShown;
             #endregion
         }
 
-        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs<TWorkspaceModel> e) { }
+        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs e) { }
 
-        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs<TWorkspaceModel> e) { }
+        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e) { }
 
         #endregion Public Constructors
 
         #region Public Properties
 
-        public Workspace<TWorkspaceModel> Workspace { get; }
+        public Workspace Workspace { get; }
 
-        public DockableWindowManager<TWorkspaceModel> WindowManager { get; }
+        public DockableWindowManager WindowManager { get; }
 
         #endregion Public Properties
 
@@ -77,7 +76,7 @@ namespace FormsUI.Windows
             base.OnFormClosed(e);
         }
 
-        protected virtual Workspace<TWorkspaceModel> CreateWorkspace() => null;
+        protected virtual Workspace CreateWorkspace() => null;
 
         protected virtual DockPanel DockArea { get; } = null;
 
@@ -85,14 +84,14 @@ namespace FormsUI.Windows
 
         protected virtual void OnWorkspaceClosed(object sender, EventArgs e) { }
 
-        protected virtual void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs<TWorkspaceModel> e) { }
+        protected virtual void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e) { }
 
-        protected virtual void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs<TWorkspaceModel> e) { }
+        protected virtual void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e) { }
 
-        protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs<TWorkspaceModel> e) { }
+        protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e) { }
 
         protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems, DockState dockState, bool show = true, Action<TToolWindow> registeredCallback = null)
-            where TToolWindow : DockableWindow<TWorkspaceModel>
+            where TToolWindow : DockableWindow
         {
             var toolWindow = WindowManager.GetWindows<TToolWindow>().FirstOrDefault();
             if (toolWindow == null)

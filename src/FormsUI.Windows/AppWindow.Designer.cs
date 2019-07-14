@@ -1,6 +1,6 @@
 ﻿namespace FormsUI.Windows
 {
-    partial class AppWindow<TWorkspaceModel>
+    partial class AppWindow
     {
         /// <summary>
         /// Required designer variable.

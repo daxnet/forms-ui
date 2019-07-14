@@ -14,11 +14,10 @@ namespace FormsUI.Windows
     /// instance.
     /// </summary>
     /// <typeparam name="TWorkspaceModel">The type of the workspace model.</typeparam>
-    public interface IAppWindow<TWorkspaceModel>
-        where TWorkspaceModel : IWorkspaceModel
+    public interface IAppWindow
     {
-        Workspace<TWorkspaceModel> Workspace { get; }
+        Workspace Workspace { get; }
 
-        DockableWindowManager<TWorkspaceModel> WindowManager { get; }
+        DockableWindowManager WindowManager { get; }
     }
 }

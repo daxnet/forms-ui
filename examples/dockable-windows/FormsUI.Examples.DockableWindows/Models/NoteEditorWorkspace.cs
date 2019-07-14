@@ -1,31 +1,42 @@
 ﻿using FormsUI.Workspaces;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FormsUI.Examples.DockableWindows.Models
 {
-    public sealed class NoteEditorWorkspace : Workspace<NoteEditorModel>
+    public sealed class NoteEditorWorkspace : Workspace
     {
-        protected override string WorkspaceFileDescription => throw new NotImplementedException();
+        private static readonly JsonSerializerSettings serializerSettings =
+            new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
 
-        protected override string WorkspaceFileExtension => throw new NotImplementedException();
+        protected override string WorkspaceFileDescription => "Note Editor File (*.nef)";
 
-        protected override NoteEditorModel Create()
+        protected override string WorkspaceFileExtension => "nef";
+
+        protected override IWorkspaceModel Create()
         {
-            throw new NotImplementedException();
+            return new NoteEditorModel();
         }
 
-        protected override NoteEditorModel OpenFromFile(string fileName)
+        protected override IWorkspaceModel OpenFromFile(string fileName)
         {
-            throw new NotImplementedException();
+            var json = File.ReadAllText(fileName);
+            return JsonConvert.DeserializeObject<NoteEditorModel>(json);
         }
 
-        protected override void SaveToFile(NoteEditorModel model, string fileName)
+        protected override void SaveToFile(IWorkspaceModel model, string fileName)
         {
-            throw new NotImplementedException();
+            var json = JsonConvert.SerializeObject(model, serializerSettings);
+            File.WriteAllText(fileName, json);
         }
     }
 }

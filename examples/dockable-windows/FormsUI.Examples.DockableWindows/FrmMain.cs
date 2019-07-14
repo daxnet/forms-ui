@@ -1,4 +1,5 @@
-﻿using FormsUI.Windows;
+﻿using FormsUI.Examples.DockableWindows.Models;
+using FormsUI.Windows;
 using FormsUI.Workspaces;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Examples.DockableWindows
 {
-    public partial class FrmMain : BaseAppWindow
+    public partial class FrmMain : AppWindow
     {
         public FrmMain()
         {
@@ -22,11 +23,11 @@ namespace FormsUI.Examples.DockableWindows
             RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft, false);
         }
 
-        protected override Workspace<TextEditorModel> CreateWorkspace() => new TextEditorWorkspace();
+        protected override Workspace CreateWorkspace() => new NoteEditorWorkspace();
 
         protected override DockPanel DockArea => dockPanel;
 
-        protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs<TextEditorModel> e)
+        protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
             var editorWindow = WindowManager.CreateWindow<EditorWindow>();
             editorWindow.Show(dockPanel, DockState.Document);

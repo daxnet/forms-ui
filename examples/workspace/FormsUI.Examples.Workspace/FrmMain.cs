@@ -81,7 +81,7 @@ namespace FormsUI.Examples.Workspace
             statusLabel.Text = string.Empty;
         }
 
-        private void Workspace_WorkspaceSaved(object sender, WorkspaceSavedEventArgs<TextEditorModel> e)
+        private void Workspace_WorkspaceSaved(object sender, WorkspaceSavedEventArgs e)
         {
             mnuSave.Enabled = false;
             tbtnSave.Enabled = false;
@@ -94,17 +94,17 @@ namespace FormsUI.Examples.Workspace
             tbtnSave.Enabled = true;
         }
 
-        private void Workspace_WorkspaceOpened(object sender, WorkspaceOpenedEventArgs<TextEditorModel> e)
+        private void Workspace_WorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
         {
             txtMain.Enabled = true;
-            txtMain.Text = e.Model.Text;
+            txtMain.Text = (e.Model as TextEditorModel).Text;
 
             mnuSaveAs.Enabled = true;
             mnuClose.Enabled = true;
             statusLabel.Text = e.FileName;
         }
 
-        private void Workspace_WorkspaceCreated(object sender, WorkspaceCreatedEventArgs<TextEditorModel> e)
+        private void Workspace_WorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
             txtMain.Enabled = true;
             txtMain.Text = string.Empty;
@@ -135,7 +135,7 @@ namespace FormsUI.Examples.Workspace
 
         private void txtMain_TextChanged(object sender, EventArgs e)
         {
-            workspace.Model.Text = txtMain.Text;
+            (workspace.Model as TextEditorModel).Text = txtMain.Text;
         }
     }
 }

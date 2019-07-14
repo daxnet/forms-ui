@@ -12,31 +12,72 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
-    public partial class DockableWindow<TWorkspaceModel> : DockContent
-        where TWorkspaceModel : IWorkspaceModel
+    public partial class DockableWindow : DockContent
     {
-        protected DockableWindow(IAppWindow<TWorkspaceModel> appWindow, bool hideOnClose = true)
-        {
-            HideOnClose = hideOnClose;
-            AppWindow = appWindow;
-        }
-
-        protected DockableWindow()
-        {
-            InitializeComponent();
-        }
+        #region Public Events
 
         public event EventHandler DockWindowHidden;
 
         public event EventHandler DockWindowShown;
 
-        protected IAppWindow<TWorkspaceModel> AppWindow { get; }
+        #endregion Public Events
+
+        #region Protected Constructors
+
+        protected DockableWindow(IAppWindow appWindow, bool hideOnClose = true)
+            : this()
+        {
+            HideOnClose = hideOnClose;
+            AppWindow = appWindow;
+
+            if (AppWindow.Workspace != null)
+            {
+                AppWindow.Workspace.WorkspaceChanged += OnWorkspaceChanged;
+                AppWindow.Workspace.WorkspaceClosed += OnWorkspaceClosed;
+                AppWindow.Workspace.WorkspaceCreated += OnWorkspaceCreated;
+                AppWindow.Workspace.WorkspaceOpened += OnWorkspaceOpened;
+                AppWindow.Workspace.WorkspaceSaved += OnWorkspaceSaved;
+            }
+        }
+
+        #endregion Protected Constructors
+
+        #region Private Constructors
+
+        private DockableWindow()
+        {
+            InitializeComponent();
+        }
+
+        #endregion Private Constructors
+
+        #region Protected Properties
+
+        protected IAppWindow AppWindow { get; }
+
+        #endregion Protected Properties
+
+        #region Public Methods
 
         public override string ToString() => Text;
 
+        #endregion Public Methods
+
+        #region Protected Methods
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            if (!HideOnClose)
+            {
+                Cleanup();
+            }
+
+            base.OnFormClosed(e);
+        }
+
         protected override void OnDockStateChanged(EventArgs e)
         {
-            
+
         }
 
         protected virtual void OnDockWindowHidden(EventArgs e)
@@ -48,5 +89,29 @@ namespace FormsUI.Windows
         {
             DockWindowShown?.Invoke(this, e);
         }
+
+        internal protected virtual void Cleanup()
+        {
+            if (AppWindow.Workspace != null)
+            {
+                AppWindow.Workspace.WorkspaceChanged -= OnWorkspaceChanged;
+                AppWindow.Workspace.WorkspaceClosed -= OnWorkspaceClosed;
+                AppWindow.Workspace.WorkspaceCreated -= OnWorkspaceCreated;
+                AppWindow.Workspace.WorkspaceOpened -= OnWorkspaceOpened;
+                AppWindow.Workspace.WorkspaceSaved -= OnWorkspaceSaved;
+            }
+        }
+
+        protected virtual void OnWorkspaceChanged(object sender, EventArgs e) { }
+
+        protected virtual void OnWorkspaceClosed(object sender, EventArgs e) { }
+
+        protected virtual void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e) { }
+
+        protected virtual void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e) { }
+
+        protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e) { }
+
+        #endregion Protected Methods
     }
 }

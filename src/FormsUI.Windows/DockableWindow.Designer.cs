@@ -1,6 +1,6 @@
 ﻿namespace FormsUI.Windows
 {
-    partial class DockableWindow<TWorkspaceModel>
+    partial class DockableWindow
     {
         /// <summary>
         /// Required designer variable.

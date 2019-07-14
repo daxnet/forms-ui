@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace FormsUI.Examples.DockableWindows
 {
-    public partial class EditorWindow : BaseDockableWindow
+    public partial class EditorWindow : DockableWindow
     {
-        public EditorWindow(IAppWindow<TextEditorModel> appWindow)
+        public EditorWindow(IAppWindow appWindow)
             : base(appWindow, false)
         {
             InitializeComponent();

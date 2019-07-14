@@ -8,27 +8,21 @@ using System.Windows.Forms;
 
 namespace FormsUI.Windows
 {
-    /// <summary>
-    /// Represents the dockable window manager that manages the lifetime of the dockable windows in the app.
-    /// </summary>
-    /// <typeparam name="TWorkspaceModel">The type of the workspace model.</typeparam>
-    /// <seealso cref="FormsUI.ComponentManager{DockableWindow{TWorkspaceModel}}" />
-    public sealed class DockableWindowManager<TWorkspaceModel> : ComponentManager<DockableWindow<TWorkspaceModel>>
-        where TWorkspaceModel : IWorkspaceModel
+    public sealed class DockableWindowManager : ComponentManager<DockableWindow>
     {
 
         #region Private Fields
 
-        private readonly IAppWindow<TWorkspaceModel> appWindow;
+        private readonly IAppWindow appWindow;
         private bool disposed;
 
         #endregion Private Fields
 
         #region Public Events
 
-        public event EventHandler<DockableWindowHiddenEventArgs<TWorkspaceModel>> WindowHidden;
+        public event EventHandler<DockableWindowHiddenEventArgs> WindowHidden;
 
-        public event EventHandler<DockableWindowShownEventArgs<TWorkspaceModel>> WindowShown;
+        public event EventHandler<DockableWindowShownEventArgs> WindowShown;
 
         #endregion Public Events
 
@@ -38,7 +32,7 @@ namespace FormsUI.Windows
         /// Initializes a new instance of the <see cref="DockableWindowManager{TWorkspaceModel}"/> class.
         /// </summary>
         /// <param name="appWindow">The application window.</param>
-        public DockableWindowManager(IAppWindow<TWorkspaceModel> appWindow)
+        public DockableWindowManager(IAppWindow appWindow)
         {
             this.appWindow = appWindow;
         }
@@ -52,7 +46,7 @@ namespace FormsUI.Windows
         /// </summary>
         /// <typeparam name="TDockableWindow">The type of the dockable window to be closed.</typeparam>
         public void CloseWindows<TDockableWindow>()
-            where TDockableWindow : DockableWindow<TWorkspaceModel>
+            where TDockableWindow : DockableWindow
         {
             var windowSelector = from window in components
                                  where window is TDockableWindow
@@ -65,7 +59,7 @@ namespace FormsUI.Windows
         }
 
         public TDockableWindow CreateWindow<TDockableWindow>(params object[] args)
-                    where TDockableWindow : DockableWindow<TWorkspaceModel>
+                    where TDockableWindow : DockableWindow
         {
             var parms = new List<object> { appWindow };
             if (args != null && args.Length > 0)
@@ -82,19 +76,19 @@ namespace FormsUI.Windows
             return dockableWindow;
         }
         public IEnumerable<TDockableWindow> GetWindows<TDockableWindow>()
-            where TDockableWindow : DockableWindow<TWorkspaceModel> 
+            where TDockableWindow : DockableWindow 
             => GetWindows(typeof(TDockableWindow)).Select(w => w as TDockableWindow);
 
-        public IEnumerable<DockableWindow<TWorkspaceModel>> GetWindows(Type dockableWindowType) 
+        public IEnumerable<DockableWindow> GetWindows(Type dockableWindowType) 
             => from window in components
                where window.GetType() == dockableWindowType
                select window;
 
         public IEnumerable<TDockableWindow> GetWindows<TDockableWindow>(Func<TDockableWindow, bool> predicate)
-            where TDockableWindow : DockableWindow<TWorkspaceModel>
+            where TDockableWindow : DockableWindow
             => GetWindows<TDockableWindow>().Where(predicate);
 
-        public IEnumerable<DockableWindow<TWorkspaceModel>> GetWindows(Type dockableWindowType, Func<DockableWindow<TWorkspaceModel>, bool> predicate)
+        public IEnumerable<DockableWindow> GetWindows(Type dockableWindowType, Func<DockableWindow, bool> predicate)
             => GetWindows(dockableWindowType).Where(predicate);
 
         #endregion Public Methods
@@ -127,17 +121,17 @@ namespace FormsUI.Windows
 
         private void DockableWindow_DockWindowHidden(object sender, EventArgs e)
         {
-            WindowHidden?.Invoke(this, new DockableWindowHiddenEventArgs<TWorkspaceModel>((DockableWindow<TWorkspaceModel>)sender));
+            WindowHidden?.Invoke(this, new DockableWindowHiddenEventArgs((DockableWindow)sender));
         }
 
         private void DockableWindow_DockWindowShown(object sender, EventArgs e)
         {
-            WindowShown?.Invoke(this, new DockableWindowShownEventArgs<TWorkspaceModel>((DockableWindow<TWorkspaceModel>)sender));
+            WindowShown?.Invoke(this, new DockableWindowShownEventArgs((DockableWindow)sender));
         }
 
         private void DockableWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            var dockableWindow = (DockableWindow<TWorkspaceModel>)sender;
+            var dockableWindow = (DockableWindow)sender;
             if (!dockableWindow?.HideOnClose ?? false)
             {
                 components.Remove(dockableWindow);
