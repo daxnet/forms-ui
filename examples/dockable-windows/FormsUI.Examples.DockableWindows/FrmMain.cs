@@ -21,6 +21,17 @@ namespace FormsUI.Examples.DockableWindows
             InitializeComponent();
 
             RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft, false);
+
+            ResetMenuStates();
+        }
+
+        private void ResetMenuStates()
+        {
+            mnuNew.Enabled = true;
+            mnuOpen.Enabled = true;
+            mnuSave.Enabled = false;
+            mnuSaveAs.Enabled = false;
+            mnuClose.Enabled = false;
         }
 
         protected override Workspace CreateWorkspace() => new NoteEditorWorkspace();
@@ -29,8 +40,34 @@ namespace FormsUI.Examples.DockableWindows
 
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
-            //var editorWindow = WindowManager.CreateWindow<EditorWindow>();
-            //editorWindow.Show(dockPanel, DockState.Document);
+            WindowManager.GetWindows<NoteListWindow>().First().Show();
+
+            var editorModel = e.Model as NoteEditorModel;
+
+            var editorWindow = WindowManager.CreateWindow<EditorWindow>(editorModel.Notes.First(n => n.Title == "Note1"));
+            editorWindow.Show(DockArea, DockState.Document);
+
+            mnuSave.Enabled = true;
+            mnuSaveAs.Enabled = true;
+            mnuClose.Enabled = true;
+        }
+
+        protected override void OnWorkspaceChanged(object sender, EventArgs e)
+        {
+            mnuSave.Enabled = true;
+            mnuSaveAs.Enabled = true;
+        }
+
+        protected override void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e)
+        {
+            mnuSave.Enabled = false;
+            mnuSaveAs.Enabled = false;
+        }
+
+        protected override void OnWorkspaceClosed(object sender, EventArgs e)
+        {
+            WindowManager.CloseWindows<EditorWindow>();
+            ResetMenuStates();
         }
 
         private void Action_New(object sender, EventArgs e)

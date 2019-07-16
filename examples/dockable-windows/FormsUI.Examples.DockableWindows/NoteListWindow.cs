@@ -38,5 +38,10 @@ namespace FormsUI.Examples.DockableWindows
         {
             lst.Items.Clear();
         }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+        }
     }
 }

@@ -48,9 +48,9 @@ namespace FormsUI.Windows
         public void CloseWindows<TDockableWindow>()
             where TDockableWindow : DockableWindow
         {
-            var windowSelector = from window in components
+            var windowSelector = (from window in components
                                  where window is TDockableWindow
-                                 select window as TDockableWindow;
+                                 select window as TDockableWindow).ToList();
 
             foreach (var dockableWindow in windowSelector)
             {
