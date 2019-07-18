@@ -31,9 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -43,11 +40,16 @@
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNoteList = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tbtnNew = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tbtnNodeList = new System.Windows.Forms.ToolStripButton();
+            this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +61,7 @@
             this.mnuView});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(639, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(926, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -79,60 +81,42 @@
             this.mnuFile.Size = new System.Drawing.Size(39, 21);
             this.mnuFile.Text = "&File";
             // 
-            // mnuNew
-            // 
-            this.mnuNew.Name = "mnuNew";
-            this.mnuNew.Size = new System.Drawing.Size(130, 22);
-            this.mnuNew.Text = "&New";
-            this.mnuNew.Click += new System.EventHandler(this.Action_New);
-            // 
-            // mnuOpen
-            // 
-            this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(130, 22);
-            this.mnuOpen.Text = "&Open...";
-            this.mnuOpen.Click += new System.EventHandler(this.Action_Open);
-            // 
-            // mnuSave
-            // 
-            this.mnuSave.Name = "mnuSave";
-            this.mnuSave.Size = new System.Drawing.Size(130, 22);
-            this.mnuSave.Text = "&Save";
-            this.mnuSave.Click += new System.EventHandler(this.Action_Save);
-            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(127, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuSaveAs
             // 
             this.mnuSaveAs.Name = "mnuSaveAs";
-            this.mnuSaveAs.Size = new System.Drawing.Size(130, 22);
+            this.mnuSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.mnuSaveAs.Size = new System.Drawing.Size(208, 22);
             this.mnuSaveAs.Text = "Save As...";
             this.mnuSaveAs.Click += new System.EventHandler(this.Action_SaveAs);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(127, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuClose
             // 
+            this.mnuClose.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.cross;
             this.mnuClose.Name = "mnuClose";
-            this.mnuClose.Size = new System.Drawing.Size(130, 22);
+            this.mnuClose.Size = new System.Drawing.Size(208, 22);
             this.mnuClose.Text = "&Close";
             this.mnuClose.Click += new System.EventHandler(this.Action_Close);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(127, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
-            this.mnuExit.Size = new System.Drawing.Size(130, 22);
+            this.mnuExit.Size = new System.Drawing.Size(208, 22);
             this.mnuExit.Text = "&Exit";
             // 
             // mnuView
@@ -145,21 +129,67 @@
             // 
             // mnuNoteList
             // 
+            this.mnuNoteList.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.application_side_boxes;
             this.mnuNoteList.Name = "mnuNoteList";
-            this.mnuNoteList.Size = new System.Drawing.Size(128, 22);
-            this.mnuNoteList.Text = "Note List";
+            this.mnuNoteList.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.mnuNoteList.Size = new System.Drawing.Size(180, 22);
+            this.mnuNoteList.Text = "My Note List";
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tbtnNew,
+            this.toolStripButton2,
             this.toolStripButton1,
             this.toolStripSeparator1,
             this.tbtnNodeList});
             this.toolStrip1.Location = new System.Drawing.Point(0, 25);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(639, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(926, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 594);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(926, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // dockPanel
+            // 
+            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.dockPanel.Location = new System.Drawing.Point(0, 50);
+            this.dockPanel.Name = "dockPanel";
+            this.dockPanel.Size = new System.Drawing.Size(926, 544);
+            this.dockPanel.TabIndex = 4;
+            // 
+            // tbtnNew
+            // 
+            this.tbtnNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbtnNew.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white;
+            this.tbtnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbtnNew.Name = "tbtnNew";
+            this.tbtnNew.Size = new System.Drawing.Size(23, 22);
+            this.tbtnNew.Text = "toolStripButton1";
+            this.tbtnNew.ToolTipText = "Create a new Note List document";
+            this.tbtnNew.Click += new System.EventHandler(this.Action_New);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
             // 
             // toolStripButton1
             // 
@@ -170,48 +200,55 @@
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 446);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(639, 22);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // dockPanel
-            // 
-            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.dockPanel.Location = new System.Drawing.Point(0, 50);
-            this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(639, 396);
-            this.dockPanel.TabIndex = 4;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
             // tbtnNodeList
             // 
             this.tbtnNodeList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbtnNodeList.Image = ((System.Drawing.Image)(resources.GetObject("tbtnNodeList.Image")));
+            this.tbtnNodeList.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.application_side_boxes;
             this.tbtnNodeList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbtnNodeList.Name = "tbtnNodeList";
             this.tbtnNodeList.Size = new System.Drawing.Size(23, 22);
             this.tbtnNodeList.Text = "toolStripButton2";
+            this.tbtnNodeList.ToolTipText = "Shows or hides My Notes window.";
+            // 
+            // mnuNew
+            // 
+            this.mnuNew.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white;
+            this.mnuNew.Name = "mnuNew";
+            this.mnuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.mnuNew.Size = new System.Drawing.Size(208, 22);
+            this.mnuNew.Text = "&New";
+            this.mnuNew.Click += new System.EventHandler(this.Action_New);
+            // 
+            // mnuOpen
+            // 
+            this.mnuOpen.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.folder_page;
+            this.mnuOpen.Name = "mnuOpen";
+            this.mnuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.mnuOpen.Size = new System.Drawing.Size(208, 22);
+            this.mnuOpen.Text = "&Open...";
+            this.mnuOpen.Click += new System.EventHandler(this.Action_Open);
+            // 
+            // mnuSave
+            // 
+            this.mnuSave.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.disk;
+            this.mnuSave.Name = "mnuSave";
+            this.mnuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.mnuSave.Size = new System.Drawing.Size(208, 22);
+            this.mnuSave.Text = "&Save";
+            this.mnuSave.Click += new System.EventHandler(this.Action_Save);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 468);
+            this.ClientSize = new System.Drawing.Size(926, 616);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Controls.SetChildIndex(this.menuStrip1, 0);
             this.Controls.SetChildIndex(this.toolStrip1, 0);
@@ -241,12 +278,14 @@
         private System.Windows.Forms.ToolStripMenuItem mnuExit;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tbtnNew;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem mnuView;
         private System.Windows.Forms.ToolStripMenuItem mnuNoteList;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tbtnNodeList;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
 

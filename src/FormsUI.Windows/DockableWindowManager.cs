@@ -75,19 +75,30 @@ namespace FormsUI.Windows
 
             return dockableWindow;
         }
-        public IEnumerable<TDockableWindow> GetWindows<TDockableWindow>()
-            where TDockableWindow : DockableWindow 
-            => GetWindows(typeof(TDockableWindow)).Select(w => w as TDockableWindow);
+        public TDockableWindow GetFirstWindow<TDockableWindow>()
+            where TDockableWindow : DockableWindow
+            => GetWindows<TDockableWindow>().FirstOrDefault();
 
+        public DockableWindow GetFirstWindow(Type dockableWindowType)
+            => GetWindows(dockableWindowType).FirstOrDefault();
+
+        public TDockableWindow GetFirstWindow<TDockableWindow>(Func<TDockableWindow, bool> predicate)
+            where TDockableWindow : DockableWindow
+            => GetWindows(predicate).FirstOrDefault();
+
+        public DockableWindow GetFirstWindow(Type dockableWindowType, Func<DockableWindow, bool> predicate)
+            => GetWindows(dockableWindowType, predicate).FirstOrDefault();
+
+        public IEnumerable<TDockableWindow> GetWindows<TDockableWindow>()
+                                            where TDockableWindow : DockableWindow 
+            => GetWindows(typeof(TDockableWindow)).Select(w => w as TDockableWindow);
         public IEnumerable<DockableWindow> GetWindows(Type dockableWindowType) 
             => from window in components
                where window.GetType() == dockableWindowType
                select window;
-
         public IEnumerable<TDockableWindow> GetWindows<TDockableWindow>(Func<TDockableWindow, bool> predicate)
             where TDockableWindow : DockableWindow
             => GetWindows<TDockableWindow>().Where(predicate);
-
         public IEnumerable<DockableWindow> GetWindows(Type dockableWindowType, Func<DockableWindow, bool> predicate)
             => GetWindows(dockableWindowType).Where(predicate);
 
@@ -139,5 +150,6 @@ namespace FormsUI.Windows
         }
 
         #endregion Private Methods
+
     }
 }

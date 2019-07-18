@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
@@ -19,5 +20,7 @@ namespace FormsUI.Windows
         Workspace Workspace { get; }
 
         DockableWindowManager WindowManager { get; }
+
+        DockPanel DockArea { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace FormsUI.Examples.DockableWindows
         {
             InitializeComponent();
 
-            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft, false);
+            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft);
 
             ResetMenuStates();
         }
@@ -36,7 +36,7 @@ namespace FormsUI.Examples.DockableWindows
 
         protected override Workspace CreateWorkspace() => new NoteEditorWorkspace();
 
-        protected override DockPanel DockArea => dockPanel;
+        public override DockPanel DockArea => dockPanel;
 
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
@@ -49,6 +49,13 @@ namespace FormsUI.Examples.DockableWindows
 
             mnuSave.Enabled = true;
             mnuSaveAs.Enabled = true;
+            mnuClose.Enabled = true;
+        }
+
+        protected override void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
+        {
+            mnuSave.Enabled = false;
+            mnuSaveAs.Enabled = false;
             mnuClose.Enabled = true;
         }
 

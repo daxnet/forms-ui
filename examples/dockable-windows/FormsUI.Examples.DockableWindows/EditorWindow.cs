@@ -15,19 +15,27 @@ namespace FormsUI.Examples.DockableWindows
 {
     public partial class EditorWindow : DockableWindow
     {
-        private readonly Note note;
-
         public EditorWindow(IAppWindow appWindow, Note note)
             : base(appWindow, false)
         {
             InitializeComponent();
-            this.note = note;
+            this.Note = note;
             this.txtEditor.Text = note.Content;
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            txtEditor.SelectionStart = 0;
+            txtEditor.SelectionLength = 0;
+            txtEditor.Focus();
+        }
+
+        public Note Note { get; }
+
         private void TxtEditor_TextChanged(object sender, EventArgs e)
         {
-            note.Content = txtEditor.Text;
+            Note.Content = txtEditor.Text;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

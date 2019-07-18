@@ -78,7 +78,7 @@ namespace FormsUI.Windows
 
         protected virtual Workspace CreateWorkspace() => null;
 
-        protected virtual DockPanel DockArea { get; } = null;
+        public virtual DockPanel DockArea { get; } = null;
 
         protected virtual void OnWorkspaceChanged(object sender, EventArgs e) { }
 
