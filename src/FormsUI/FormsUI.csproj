@@ -110,6 +110,8 @@
     <Compile Include="Workspaces\WorkspaceModelVersionAttribute.cs" />
     <Compile Include="Workspaces\WorkspaceOpenedEventArgs.cs" />
     <Compile Include="Workspaces\WorkspaceSavedEventArgs.cs" />
+    <Compile Include="Workspaces\WorkspaceState.cs" />
+    <Compile Include="Workspaces\WorkspaceStateChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FormsUIKey.snk" />

@@ -33,14 +33,22 @@
             this.lst = new System.Windows.Forms.ListView();
             this.colNoteTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmnuAddNewNote = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmnuDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lst
             // 
             this.lst.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colNoteTitle});
+            this.lst.ContextMenuStrip = this.contextMenuStrip1;
             this.lst.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lst.HideSelection = false;
+            this.lst.LabelEdit = true;
             this.lst.Location = new System.Drawing.Point(0, 0);
             this.lst.MultiSelect = false;
             this.lst.Name = "lst";
@@ -49,6 +57,7 @@
             this.lst.TabIndex = 0;
             this.lst.UseCompatibleStateImageBehavior = false;
             this.lst.View = System.Windows.Forms.View.Details;
+            this.lst.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.Lst_AfterLabelEdit);
             this.lst.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Lst_MouseDoubleClick);
             // 
             // colNoteTitle
@@ -62,6 +71,46 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "Note");
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmnuAddNewNote,
+            this.toolStripMenuItem1,
+            this.cmnuRename,
+            this.cmnuDelete});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 98);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
+            // 
+            // cmnuAddNewNote
+            // 
+            this.cmnuAddNewNote.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_add;
+            this.cmnuAddNewNote.Name = "cmnuAddNewNote";
+            this.cmnuAddNewNote.Size = new System.Drawing.Size(180, 22);
+            this.cmnuAddNewNote.Text = "Add New Note";
+            this.cmnuAddNewNote.Click += new System.EventHandler(this.CmnuAddNewNote_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // cmnuDelete
+            // 
+            this.cmnuDelete.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_delete;
+            this.cmnuDelete.Name = "cmnuDelete";
+            this.cmnuDelete.Size = new System.Drawing.Size(180, 22);
+            this.cmnuDelete.Text = "Delete...";
+            this.cmnuDelete.Click += new System.EventHandler(this.CmnuDelete_Click);
+            // 
+            // cmnuRename
+            // 
+            this.cmnuRename.Name = "cmnuRename";
+            this.cmnuRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.cmnuRename.Size = new System.Drawing.Size(180, 22);
+            this.cmnuRename.Text = "Rename";
+            this.cmnuRename.Click += new System.EventHandler(this.CmnuRename_Click);
+            // 
             // NoteListWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -71,6 +120,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "NoteListWindow";
             this.Text = "My Notes";
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -80,5 +130,10 @@
         private System.Windows.Forms.ListView lst;
         private System.Windows.Forms.ColumnHeader colNoteTitle;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem cmnuAddNewNote;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem cmnuDelete;
+        private System.Windows.Forms.ToolStripMenuItem cmnuRename;
     }
 }

@@ -18,9 +18,13 @@ namespace FormsUI.Examples.DockableWindows.Models
                 Formatting = Formatting.Indented
             };
 
-        protected override string WorkspaceFileDescription => "Note Editor File (*.nef)";
+        protected override string WorkspaceFileDescription => "Note Editor File";
 
         protected override string WorkspaceFileExtension => "nef";
+
+        protected override string SaveDialogTitle => "Save Notes";
+
+        protected override string OpenDialogTitle => "Open Notes";
 
         protected override IWorkspaceModel Create()
         {

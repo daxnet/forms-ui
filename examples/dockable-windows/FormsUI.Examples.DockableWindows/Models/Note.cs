@@ -36,5 +36,20 @@ namespace FormsUI.Examples.DockableWindows.Models
                 }
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Note note &&
+                   title == note.title &&
+                   content == note.content;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1490960589;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(title);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(content);
+            return hashCode;
+        }
     }
 }

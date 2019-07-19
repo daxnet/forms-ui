@@ -25,6 +25,11 @@ namespace FormsUI.Examples.DockableWindows.Models
             notes.Add(note);
         }
 
+        public void Delete(Note note)
+        {
+            notes.Remove(note);
+        }
+
         public int Count => notes.Count;
 
         public IEnumerable<Note> Notes => notes;

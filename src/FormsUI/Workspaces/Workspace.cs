@@ -14,8 +14,9 @@ namespace FormsUI.Workspaces
 
         #region Private Fields
 
-        private bool closed = true;
+        //private bool closed = true;
         private string workspaceFileName;
+        private WorkspaceState state = WorkspaceState.Inactive;
 
         #endregion Private Fields
 
@@ -45,6 +46,8 @@ namespace FormsUI.Workspaces
         /// Occurs when the workspace has been saved.
         /// </summary>
         public event EventHandler<WorkspaceSavedEventArgs> WorkspaceSaved;
+
+        public event EventHandler<WorkspaceStateChangedEventArgs> WorkspaceStateChanged;
 
         #endregion Public Events
 
@@ -86,7 +89,8 @@ namespace FormsUI.Workspaces
         /// <value>
         ///   <c>true</c> if the current workspace is active; otherwise, <c>false</c>.
         /// </value>
-        public bool IsActive => !closed;
+        // public bool IsActive => !closed;
+        public bool IsActive => (State & WorkspaceState.Active) == WorkspaceState.Active;
         /// <summary>
         /// Gets the model instance of the workspace.
         /// </summary>
@@ -94,6 +98,19 @@ namespace FormsUI.Workspaces
         /// The model instance of the workspace.
         /// </value>
         public IWorkspaceModel Model { get; private set; }
+
+        public WorkspaceState State
+        {
+            get => state;
+            private set
+            {
+                if (state != value)
+                {
+                    state = value;
+                    OnWorkspaceStateChanged(new WorkspaceStateChangedEventArgs(state));
+                }
+            }
+        }
 
         #endregion Public Properties
 
@@ -135,6 +152,16 @@ namespace FormsUI.Workspaces
         /// </value>
         protected abstract string WorkspaceFileExtension { get; }
 
+        /// <summary>
+        /// Gets a <see cref="string"/> which represents the title of the save workspace dialog.
+        /// </summary>
+        protected virtual string SaveDialogTitle { get => "Save Workspace"; }
+
+        /// <summary>
+        /// Gets a <see cref="string"/> which represents the title of the open workspace dialog.
+        /// </summary>
+        protected virtual string OpenDialogTitle { get => "Open Workspace"; }
+
         #endregion Protected Properties
 
         #region Public Methods
@@ -171,7 +198,7 @@ namespace FormsUI.Workspaces
 
             OnWorkspaceClosed(EventArgs.Empty);
             HasChanged = false;
-            closed = true;
+            // closed = true;
             return true;
         }
 
@@ -201,7 +228,7 @@ namespace FormsUI.Workspaces
             // If the workspace model instance has been created successfully and there is no active workspace,
             // or the active workspace has been closed successfully, assign the newly created workspace instance
             // to the workspace model in the current workspace.
-            if (creatingModel != null && (closed || this.Close()))
+            if (creatingModel != null && (State == WorkspaceState.Inactive || this.Close()))
             {
                 this.Model = creatingModel;
 
@@ -213,7 +240,7 @@ namespace FormsUI.Workspaces
                 this.OnWorkspaceCreated(new WorkspaceCreatedEventArgs(this.Model));
                 this.OnWorkspaceChanged(EventArgs.Empty);
 
-                this.closed = false;
+                // this.closed = false;
 
                 return true;
             }
@@ -232,7 +259,7 @@ namespace FormsUI.Workspaces
                 Filter = $"{WorkspaceFileDescription}(*.{WorkspaceFileExtension})|*.{WorkspaceFileExtension}",
                 AddExtension = true,
                 DefaultExt = WorkspaceFileExtension,
-                Title = "Open Workspace"
+                Title = OpenDialogTitle
             })
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -250,7 +277,7 @@ namespace FormsUI.Workspaces
         /// <returns>True if the open was successful, otherwise, false.</returns>
         public bool Open(string fileName)
         {
-            if (!closed)
+            if (IsActive)
             {
                 if (!Close())
                 {
@@ -266,7 +293,7 @@ namespace FormsUI.Workspaces
 
             this.workspaceFileName = fileName;
             this.OnWorkspaceOpened(new WorkspaceOpenedEventArgs(fileName, this.Model));
-            this.closed = false;
+            // this.closed = false;
             return true;
         }
 
@@ -297,7 +324,7 @@ namespace FormsUI.Workspaces
                     Filter = $"{WorkspaceFileDescription}(*.{WorkspaceFileExtension})|*.{WorkspaceFileExtension}",
                     AddExtension = true,
                     DefaultExt = WorkspaceFileExtension,
-                    Title = "Save Workspace"
+                    Title = SaveDialogTitle
                 })
                 {
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -351,6 +378,7 @@ namespace FormsUI.Workspaces
         {
             this.WorkspaceChanged?.Invoke(this, e);
             HasChanged = true;
+            State = WorkspaceState.Modified;
         }
 
         /// <summary>
@@ -363,6 +391,7 @@ namespace FormsUI.Workspaces
 
             this.HasChanged = false;
             this.workspaceFileName = null;
+            State = WorkspaceState.Inactive;
         }
 
         /// <summary>
@@ -373,6 +402,7 @@ namespace FormsUI.Workspaces
         {
             this.WorkspaceCreated?.Invoke(this, e);
             HasChanged = true;
+            State = WorkspaceState.Clean;
         }
 
         /// <summary>
@@ -382,7 +412,7 @@ namespace FormsUI.Workspaces
         protected virtual void OnWorkspaceOpened(WorkspaceOpenedEventArgs e)
         {
             this.WorkspaceOpened?.Invoke(this, e);
-            // changed = false;
+            State = WorkspaceState.Clean;
         }
 
         /// <summary>
@@ -393,6 +423,12 @@ namespace FormsUI.Workspaces
         {
             this.WorkspaceSaved?.Invoke(this, e);
             HasChanged = false;
+            State = WorkspaceState.Clean;
+        }
+
+        protected virtual void OnWorkspaceStateChanged(WorkspaceStateChangedEventArgs e)
+        {
+            this.WorkspaceStateChanged?.Invoke(this, e);
         }
 
         /// <summary>

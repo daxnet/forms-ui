@@ -14,6 +14,7 @@ namespace FormsUI.Windows
 {
     public partial class AppWindow : Form, IAppWindow
     {
+        private readonly Dictionary<Type, IEnumerable<ToolStripItem>> toolWindowRegistrations = new Dictionary<Type, IEnumerable<ToolStripItem>>();
 
         #region Public Constructors
 
@@ -32,6 +33,7 @@ namespace FormsUI.Windows
                 Workspace.WorkspaceCreated += OnWorkspaceCreated;
                 Workspace.WorkspaceOpened += OnWorkspaceOpened;
                 Workspace.WorkspaceSaved += OnWorkspaceSaved;
+                Workspace.WorkspaceStateChanged += OnWorkspaceStateChanged;
             }
             #endregion
 
@@ -42,9 +44,36 @@ namespace FormsUI.Windows
             #endregion
         }
 
-        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs e) { }
+        protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
 
-        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e) { }
+        private void ToggleToolWindowToolStripCheckedState(Type windowType, bool @checked)
+        {
+            if (toolWindowRegistrations.ContainsKey(windowType))
+            {
+                foreach (var toolStripItem in toolWindowRegistrations[windowType])
+                {
+                    if (toolStripItem is ToolStripMenuItem tsmi)
+                    {
+                        tsmi.Checked = @checked;
+                    }
+
+                    if (toolStripItem is ToolStripButton tsb)
+                    {
+                        tsb.Checked = @checked;
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs e)
+        {
+            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), true);
+        }
+
+        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e)
+        {
+            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), false);
+        }
 
         #endregion Public Constructors
 
@@ -67,6 +96,7 @@ namespace FormsUI.Windows
                 Workspace.WorkspaceCreated -= OnWorkspaceCreated;
                 Workspace.WorkspaceOpened -= OnWorkspaceOpened;
                 Workspace.WorkspaceSaved -= OnWorkspaceSaved;
+                Workspace.WorkspaceStateChanged -= OnWorkspaceStateChanged;
             }
 
             WindowManager.WindowHidden -= OnWindowHidden;
@@ -94,29 +124,40 @@ namespace FormsUI.Windows
             where TToolWindow : DockableWindow
         {
             var toolWindow = WindowManager.GetWindows<TToolWindow>().FirstOrDefault();
-            if (toolWindow == null)
+            if (toolWindow == null && !this.toolWindowRegistrations.ContainsKey(typeof(TToolWindow)))
             {
-                toolWindow = WindowManager.CreateWindow<TToolWindow>();
-                if (DockArea != null)
+                try
                 {
-                    if (dockState != DockState.Hidden &&
-                        dockState != DockState.Unknown && dockState != DockState.Hidden)
+                    this.toolWindowRegistrations.Add(typeof(TToolWindow), toolStripItems);
+                    toolWindow = WindowManager.CreateWindow<TToolWindow>();
+                    if (DockArea != null)
                     {
-                        toolWindow.Show(DockArea, dockState);
-                        if (!show)
+                        if (dockState != DockState.Hidden &&
+                            dockState != DockState.Unknown && dockState != DockState.Hidden)
                         {
-                            toolWindow.Hide();
+                            toolWindow.Show(DockArea, dockState);
+                            if (!show)
+                            {
+                                toolWindow.Hide();
+                            }
                         }
                     }
-                }
 
-                foreach (var toolStripItem in toolStripItems)
+                    foreach (var toolStripItem in toolStripItems)
+                    {
+                        toolStripItem.Tag = typeof(TToolWindow);
+                        toolStripItem.Click += ToggleToolWindowAction;
+                    }
+
+                    registeredCallback?.Invoke(toolWindow);
+                }
+                catch
                 {
-                    toolStripItem.Tag = typeof(TToolWindow);
-                    toolStripItem.Click += ToggleToolWindowAction;
+                    if (this.toolWindowRegistrations.ContainsKey(typeof(TToolWindow)))
+                    {
+                        this.toolWindowRegistrations.Remove(typeof(TToolWindow));
+                    }
                 }
-
-                registeredCallback?.Invoke(toolWindow);
             }
         }
 
@@ -124,19 +165,22 @@ namespace FormsUI.Windows
 
         private void ToggleToolWindowAction(object sender, EventArgs e)
         {
-            if (sender is ToolStripItem tsi &&
-                tsi.Tag is Type windowType)
+            using (new LengthyOperation(this))
             {
-                var windows = WindowManager.GetWindows(windowType);
-                foreach (var window in windows)
+                if (sender is ToolStripItem tsi &&
+                    tsi.Tag is Type windowType)
                 {
-                    if (window.DockState == DockState.Hidden)
+                    var windows = WindowManager.GetWindows(windowType);
+                    foreach (var window in windows)
                     {
-                        window.Show();
-                    }
-                    else
-                    {
-                        window.Hide();
+                        if (window.DockState == DockState.Hidden)
+                        {
+                            window.Show();
+                        }
+                        else
+                        {
+                            window.Hide();
+                        }
                     }
                 }
             }

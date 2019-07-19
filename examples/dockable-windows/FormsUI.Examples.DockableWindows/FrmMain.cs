@@ -20,7 +20,7 @@ namespace FormsUI.Examples.DockableWindows
         {
             InitializeComponent();
 
-            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft);
+            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft, false);
 
             ResetMenuStates();
         }
@@ -28,8 +28,11 @@ namespace FormsUI.Examples.DockableWindows
         private void ResetMenuStates()
         {
             mnuNew.Enabled = true;
+            tbtnNew.Enabled = true;
             mnuOpen.Enabled = true;
+            tbtnOpen.Enabled = true;
             mnuSave.Enabled = false;
+            tbtnSave.Enabled = false;
             mnuSaveAs.Enabled = false;
             mnuClose.Enabled = false;
         }
@@ -42,12 +45,13 @@ namespace FormsUI.Examples.DockableWindows
         {
             WindowManager.GetWindows<NoteListWindow>().First().Show();
 
-            var editorModel = e.Model as NoteEditorModel;
+            //var editorModel = e.Model as NoteEditorModel;
 
-            var editorWindow = WindowManager.CreateWindow<EditorWindow>(editorModel.Notes.First(n => n.Title == "Note1"));
-            editorWindow.Show(DockArea, DockState.Document);
+            //var editorWindow = WindowManager.CreateWindow<EditorWindow>(editorModel.Notes.First(n => n.Title == "Note1"));
+            //editorWindow.Show(DockArea, DockState.Document);
 
             mnuSave.Enabled = true;
+            tbtnSave.Enabled = true;
             mnuSaveAs.Enabled = true;
             mnuClose.Enabled = true;
         }
@@ -55,6 +59,7 @@ namespace FormsUI.Examples.DockableWindows
         protected override void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
         {
             mnuSave.Enabled = false;
+            tbtnSave.Enabled = false;
             mnuSaveAs.Enabled = false;
             mnuClose.Enabled = true;
         }
@@ -62,12 +67,14 @@ namespace FormsUI.Examples.DockableWindows
         protected override void OnWorkspaceChanged(object sender, EventArgs e)
         {
             mnuSave.Enabled = true;
+            tbtnSave.Enabled = true;
             mnuSaveAs.Enabled = true;
         }
 
         protected override void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e)
         {
             mnuSave.Enabled = false;
+            tbtnSave.Enabled = false;
             mnuSaveAs.Enabled = false;
         }
 

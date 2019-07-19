@@ -37,6 +37,7 @@ namespace FormsUI.Windows
                 AppWindow.Workspace.WorkspaceCreated += OnWorkspaceCreated;
                 AppWindow.Workspace.WorkspaceOpened += OnWorkspaceOpened;
                 AppWindow.Workspace.WorkspaceSaved += OnWorkspaceSaved;
+                AppWindow.Workspace.WorkspaceStateChanged += OnWorkspaceStateChanged;
             }
         }
 
@@ -77,7 +78,17 @@ namespace FormsUI.Windows
 
         protected override void OnDockStateChanged(EventArgs e)
         {
-
+            switch (DockState)
+            {
+                case DockState.Hidden:
+                    this.OnDockWindowHidden(e);
+                    break;
+                case DockState.Unknown:
+                    break;
+                default:
+                    this.OnDockWindowShown(e);
+                    break;
+            }
         }
 
         protected virtual void OnDockWindowHidden(EventArgs e)
@@ -99,6 +110,7 @@ namespace FormsUI.Windows
                 AppWindow.Workspace.WorkspaceCreated -= OnWorkspaceCreated;
                 AppWindow.Workspace.WorkspaceOpened -= OnWorkspaceOpened;
                 AppWindow.Workspace.WorkspaceSaved -= OnWorkspaceSaved;
+                AppWindow.Workspace.WorkspaceStateChanged -= OnWorkspaceStateChanged;
             }
         }
 
@@ -111,6 +123,8 @@ namespace FormsUI.Windows
         protected virtual void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e) { }
 
         protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e) { }
+
+        protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
 
         #endregion Protected Methods
     }
