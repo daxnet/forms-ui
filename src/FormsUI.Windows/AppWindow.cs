@@ -12,12 +12,25 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FormsUI.Windows
 {
+    /// <summary>
+    /// Represents the base class for Windows Forms apps.
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
+    /// <seealso cref="FormsUI.Windows.IAppWindow" />
     public partial class AppWindow : Form, IAppWindow
     {
+
+        #region Private Fields
+
         private readonly Dictionary<Type, IEnumerable<ToolStripItem>> toolWindowRegistrations = new Dictionary<Type, IEnumerable<ToolStripItem>>();
+
+        #endregion Private Fields
 
         #region Public Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppWindow"/> class.
+        /// </summary>
         public AppWindow()
         {
             InitializeComponent();
@@ -42,50 +55,29 @@ namespace FormsUI.Windows
             WindowManager.WindowHidden += OnWindowHidden;
             WindowManager.WindowShown += OnWindowShown;
             #endregion
-        }
 
-        protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
-
-        private void ToggleToolWindowToolStripCheckedState(Type windowType, bool @checked)
-        {
-            if (toolWindowRegistrations.ContainsKey(windowType))
-            {
-                foreach (var toolStripItem in toolWindowRegistrations[windowType])
-                {
-                    if (toolStripItem is ToolStripMenuItem tsmi)
-                    {
-                        tsmi.Checked = @checked;
-                    }
-
-                    if (toolStripItem is ToolStripButton tsb)
-                    {
-                        tsb.Checked = @checked;
-                    }
-                }
-            }
-        }
-
-        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs e)
-        {
-            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), true);
-        }
-
-        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e)
-        {
-            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), false);
+            #region Initialize Tool Action Manager
+            ToolActionManager = new ToolActionManager();
+            #endregion
         }
 
         #endregion Public Constructors
 
         #region Public Properties
 
-        public Workspace Workspace { get; }
+        public virtual DockPanel DockArea { get; } = null;
 
         public DockableWindowManager WindowManager { get; }
+
+        public ToolActionManager ToolActionManager { get; }
+
+        public Workspace Workspace { get; }
 
         #endregion Public Properties
 
         #region Protected Methods
+
+        protected virtual Workspace CreateWorkspace() => null;
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
@@ -106,9 +98,27 @@ namespace FormsUI.Windows
             base.OnFormClosed(e);
         }
 
-        protected virtual Workspace CreateWorkspace() => null;
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (Workspace.IsActive)
+            {
+                e.Cancel = !Workspace.Close();
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
 
-        public virtual DockPanel DockArea { get; } = null;
+        protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e)
+        {
+            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), false);
+        }
+
+        protected virtual void OnWindowShown(object sender, DockableWindowShownEventArgs e)
+        {
+            ToggleToolWindowToolStripCheckedState(e.DockableWindow.GetType(), true);
+        }
 
         protected virtual void OnWorkspaceChanged(object sender, EventArgs e) { }
 
@@ -119,6 +129,8 @@ namespace FormsUI.Windows
         protected virtual void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e) { }
 
         protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e) { }
+
+        protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
 
         protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems, DockState dockState, bool show = true, Action<TToolWindow> registeredCallback = null)
             where TToolWindow : DockableWindow
@@ -163,6 +175,8 @@ namespace FormsUI.Windows
 
         #endregion Protected Methods
 
+        #region Private Methods
+
         private void ToggleToolWindowAction(object sender, EventArgs e)
         {
             using (new LengthyOperation(this))
@@ -185,5 +199,27 @@ namespace FormsUI.Windows
                 }
             }
         }
+
+        private void ToggleToolWindowToolStripCheckedState(Type windowType, bool @checked)
+        {
+            if (toolWindowRegistrations.ContainsKey(windowType))
+            {
+                foreach (var toolStripItem in toolWindowRegistrations[windowType])
+                {
+                    if (toolStripItem is ToolStripMenuItem tsmi)
+                    {
+                        tsmi.Checked = @checked;
+                    }
+
+                    if (toolStripItem is ToolStripButton tsb)
+                    {
+                        tsb.Checked = @checked;
+                    }
+                }
+            }
+        }
+
+        #endregion Private Methods
+
     }
 }

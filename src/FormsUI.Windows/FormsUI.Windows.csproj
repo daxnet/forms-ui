@@ -64,6 +64,12 @@
     <Compile Include="IAppWindow.cs" />
     <Compile Include="MenuStripMerge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToolAction.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolActionManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ToolStripMerge.cs" />
     <Compile Include="DockableWindowManager.cs">
       <SubType>Component</SubType>
