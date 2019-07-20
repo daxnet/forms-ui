@@ -22,7 +22,7 @@ namespace FormsUI.Windows
 
         #region Private Fields
 
-        private readonly Dictionary<Type, IEnumerable<ToolStripItem>> toolWindowRegistrations = new Dictionary<Type, IEnumerable<ToolStripItem>>();
+        private readonly Dictionary<Type, ToolAction> toolWindowRegistrations = new Dictionary<Type, ToolAction>();
 
         #endregion Private Fields
 
@@ -95,6 +95,10 @@ namespace FormsUI.Windows
             WindowManager.WindowShown -= OnWindowShown;
             WindowManager.Dispose();
 
+            ToolActionManager.Dispose();
+
+            toolWindowRegistrations.Clear();
+
             base.OnFormClosed(e);
         }
 
@@ -132,7 +136,23 @@ namespace FormsUI.Windows
 
         protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
 
-        protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems, DockState dockState, bool show = true, Action<TToolWindow> registeredCallback = null)
+        protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems,
+            string text,
+            Image toolImage,
+            DockState dockState,
+            bool windowShow = true,
+            string toolTipText = null,
+            Keys? shortcutKeys = null,
+            Action<TToolWindow> registeredCallback = null)
+            where TToolWindow : DockableWindow
+        {
+            RegisterToolWindow(new ToolAction($"ToolWindowAction-{Guid.NewGuid()}", this, text, toolStripItems, tooltipText: toolTipText, image: toolImage, shortcutKeys: shortcutKeys),
+                dockState,
+                windowShow,
+                registeredCallback);
+        }
+
+        protected void RegisterToolWindow<TToolWindow>(ToolAction toolAction, DockState dockState, bool show = true, Action<TToolWindow> registeredCallback = null)
             where TToolWindow : DockableWindow
         {
             var toolWindow = WindowManager.GetWindows<TToolWindow>().FirstOrDefault();
@@ -140,7 +160,8 @@ namespace FormsUI.Windows
             {
                 try
                 {
-                    this.toolWindowRegistrations.Add(typeof(TToolWindow), toolStripItems);
+                    this.toolWindowRegistrations.Add(typeof(TToolWindow), toolAction);
+                    ToolActionManager.Add(toolAction);
                     toolWindow = WindowManager.CreateWindow<TToolWindow>();
                     if (DockArea != null)
                     {
@@ -155,11 +176,8 @@ namespace FormsUI.Windows
                         }
                     }
 
-                    foreach (var toolStripItem in toolStripItems)
-                    {
-                        toolStripItem.Tag = typeof(TToolWindow);
-                        toolStripItem.Click += ToggleToolWindowAction;
-                    }
+                    toolAction.Tag = typeof(TToolWindow);
+                    toolAction.ClickAction = ToggleToolWindowAction;
 
                     registeredCallback?.Invoke(toolWindow);
                 }
@@ -177,12 +195,11 @@ namespace FormsUI.Windows
 
         #region Private Methods
 
-        private void ToggleToolWindowAction(object sender, EventArgs e)
+        private void ToggleToolWindowAction(ToolAction toolAction)
         {
             using (new LengthyOperation(this))
             {
-                if (sender is ToolStripItem tsi &&
-                    tsi.Tag is Type windowType)
+                if (toolAction.Tag is Type windowType)
                 {
                     var windows = WindowManager.GetWindows(windowType);
                     foreach (var window in windows)
@@ -204,18 +221,8 @@ namespace FormsUI.Windows
         {
             if (toolWindowRegistrations.ContainsKey(windowType))
             {
-                foreach (var toolStripItem in toolWindowRegistrations[windowType])
-                {
-                    if (toolStripItem is ToolStripMenuItem tsmi)
-                    {
-                        tsmi.Checked = @checked;
-                    }
-
-                    if (toolStripItem is ToolStripButton tsb)
-                    {
-                        tsb.Checked = @checked;
-                    }
-                }
+                var toolAction = toolWindowRegistrations[windowType];
+                toolAction.Checked = @checked;
             }
         }
 

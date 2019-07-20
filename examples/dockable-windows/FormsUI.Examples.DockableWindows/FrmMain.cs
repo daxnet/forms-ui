@@ -1,4 +1,5 @@
 ﻿using FormsUI.Examples.DockableWindows.Models;
+using FormsUI.Examples.DockableWindows.Properties;
 using FormsUI.Windows;
 using FormsUI.Workspaces;
 using System;
@@ -20,7 +21,10 @@ namespace FormsUI.Examples.DockableWindows
         {
             InitializeComponent();
 
-            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList }, DockState.DockLeft, false);
+            RegisterToolWindow<NoteListWindow>(new ToolStripItem[] { mnuNoteList, tbtnNodeList },
+                "Note List",
+                Resources.application_side_boxes,
+                DockState.DockLeftAutoHide, true, "Show or hide the Note List window.", Keys.F12);
 
             ResetMenuStates();
         }

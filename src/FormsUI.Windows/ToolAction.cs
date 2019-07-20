@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +20,9 @@ namespace FormsUI.Windows
 
         #region Private Fields
 
-        private readonly EventHandler clickHandler;
         private readonly Control parent;
-
         private bool @checked;
+        private Image image;
         private bool disposed;
         private bool enabled;
         private Keys? shortcutKeys;
@@ -39,22 +39,28 @@ namespace FormsUI.Windows
             Control parent,
             string text,
             IEnumerable<ToolStripItem> associatedToolStrips,
-            EventHandler clickHandler,
+            Action<ToolAction> clickAction = null,
             bool enabled = true,
             bool visible = true,
             string tooltipText = null,
+            Image image = null,
             object tag = null,
             Keys? shortcutKeys = null)
         {
             Id = id;
             this.parent = parent;
-            this.clickHandler = clickHandler;
+            this.ClickAction = clickAction;
             toolStrips.AddRange(associatedToolStrips);
             toolStrips.ForEach(ts => ts.Click += ExecuteClickHandler);
 
             Text = text;
             Enabled = enabled;
             Visible = visible;
+            if (image != null)
+            {
+                Image = image;
+            }
+
             if (!string.IsNullOrEmpty(tooltipText))
             {
                 TooltipText = tooltipText;
@@ -95,6 +101,8 @@ namespace FormsUI.Windows
                 });
             }
         }
+
+        public Action<ToolAction> ClickAction { get; set; }
 
         public bool Enabled
         {
@@ -172,6 +180,16 @@ namespace FormsUI.Windows
             }
         }
 
+        public Image Image
+        {
+            get => image;
+            set
+            {
+                image = value;
+                toolStrips.ForEach(ts => ts.Image = value);
+            }
+        }
+
         #endregion Public Properties
 
         #region Public Methods
@@ -195,6 +213,10 @@ namespace FormsUI.Windows
 
         #region Protected Methods
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Component" /> and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (!disposed)
@@ -218,7 +240,7 @@ namespace FormsUI.Windows
         {
             using (new LengthyOperation(parent))
             {
-                this.clickHandler?.Invoke(sender, e);
+                this.ClickAction?.Invoke(this);
             }
         }
 
