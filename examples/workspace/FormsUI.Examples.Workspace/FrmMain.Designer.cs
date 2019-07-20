@@ -53,7 +53,6 @@
             // 
             // mainMenu
             // 
-            this.mainMenu.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
@@ -83,7 +82,7 @@
             this.mnuNew.Image = global::FormsUI.Examples.Workspace.Properties.Resources.NewFile_16x;
             this.mnuNew.Name = "mnuNew";
             this.mnuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.mnuNew.Size = new System.Drawing.Size(224, 38);
+            this.mnuNew.Size = new System.Drawing.Size(208, 22);
             this.mnuNew.Text = "&New";
             this.mnuNew.Click += new System.EventHandler(this.Action_New);
             // 
@@ -92,7 +91,7 @@
             this.mnuOpen.Image = global::FormsUI.Examples.Workspace.Properties.Resources.OpenFolder_16x;
             this.mnuOpen.Name = "mnuOpen";
             this.mnuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.mnuOpen.Size = new System.Drawing.Size(224, 38);
+            this.mnuOpen.Size = new System.Drawing.Size(208, 22);
             this.mnuOpen.Text = "&Open...";
             this.mnuOpen.Click += new System.EventHandler(this.Action_Open);
             // 
@@ -101,14 +100,14 @@
             this.mnuSave.Image = global::FormsUI.Examples.Workspace.Properties.Resources.Save_16x;
             this.mnuSave.Name = "mnuSave";
             this.mnuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.mnuSave.Size = new System.Drawing.Size(224, 38);
+            this.mnuSave.Size = new System.Drawing.Size(208, 22);
             this.mnuSave.Text = "&Save";
             this.mnuSave.Click += new System.EventHandler(this.Action_Save);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(221, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuSaveAs
             // 
@@ -116,32 +115,32 @@
             this.mnuSaveAs.Name = "mnuSaveAs";
             this.mnuSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.mnuSaveAs.Size = new System.Drawing.Size(224, 38);
+            this.mnuSaveAs.Size = new System.Drawing.Size(208, 22);
             this.mnuSaveAs.Text = "Save As...";
             this.mnuSaveAs.Click += new System.EventHandler(this.Action_SaveAs);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(221, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuClose
             // 
             this.mnuClose.Image = global::FormsUI.Examples.Workspace.Properties.Resources.CloseDocument_16x;
             this.mnuClose.Name = "mnuClose";
-            this.mnuClose.Size = new System.Drawing.Size(224, 38);
+            this.mnuClose.Size = new System.Drawing.Size(208, 22);
             this.mnuClose.Text = "&Close";
             this.mnuClose.Click += new System.EventHandler(this.Action_Close);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(221, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
             // 
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
-            this.mnuExit.Size = new System.Drawing.Size(224, 38);
+            this.mnuExit.Size = new System.Drawing.Size(208, 22);
             this.mnuExit.Text = "&Exit";
             // 
             // toolStrip1

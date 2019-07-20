@@ -148,7 +148,9 @@ namespace FormsUI.Examples.DockableWindows
             var listViewItem = lst.Items[e.Item];
             if (listViewItem != null)
             {
-                (listViewItem.Tag as Note).Title = e.Label;
+                var selectedNote = listViewItem.Tag as Note;
+                AppWindow.WindowManager.GetFirstWindow<EditorWindow>(w => w.Note.Title.Equals(selectedNote.Title)).Text = e.Label;
+                selectedNote.Title = e.Label;
                 listViewItem.Text = e.Label;
             }
         }

@@ -35,7 +35,7 @@ namespace FormsUI.Windows
 
         #region Public Constructors
 
-        public ToolAction(string id,
+        protected internal ToolAction(string id,
             Control parent,
             string text,
             IEnumerable<ToolStripItem> associatedToolStrips,

@@ -52,7 +52,7 @@
             this.lst.Location = new System.Drawing.Point(0, 0);
             this.lst.MultiSelect = false;
             this.lst.Name = "lst";
-            this.lst.Size = new System.Drawing.Size(484, 732);
+            this.lst.Size = new System.Drawing.Size(396, 453);
             this.lst.SmallImageList = this.imageList1;
             this.lst.TabIndex = 0;
             this.lst.UseCompatibleStateImageBehavior = false;
@@ -67,34 +67,33 @@
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmnuAddNewNote,
             this.toolStripMenuItem1,
             this.cmnuRename,
             this.cmnuDelete});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(277, 130);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(164, 76);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // cmnuAddNewNote
             // 
             this.cmnuAddNewNote.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_add;
             this.cmnuAddNewNote.Name = "cmnuAddNewNote";
-            this.cmnuAddNewNote.Size = new System.Drawing.Size(276, 40);
+            this.cmnuAddNewNote.Size = new System.Drawing.Size(179, 38);
             this.cmnuAddNewNote.Text = "Add New Note";
             this.cmnuAddNewNote.Click += new System.EventHandler(this.CmnuAddNewNote_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(273, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(176, 6);
             // 
             // cmnuRename
             // 
             this.cmnuRename.Name = "cmnuRename";
             this.cmnuRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.cmnuRename.Size = new System.Drawing.Size(276, 40);
+            this.cmnuRename.Size = new System.Drawing.Size(179, 38);
             this.cmnuRename.Text = "Rename";
             this.cmnuRename.Click += new System.EventHandler(this.CmnuRename_Click);
             // 
@@ -102,7 +101,7 @@
             // 
             this.cmnuDelete.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_delete;
             this.cmnuDelete.Name = "cmnuDelete";
-            this.cmnuDelete.Size = new System.Drawing.Size(276, 40);
+            this.cmnuDelete.Size = new System.Drawing.Size(179, 38);
             this.cmnuDelete.Text = "Delete...";
             this.cmnuDelete.Click += new System.EventHandler(this.CmnuDelete_Click);
             // 
@@ -114,9 +113,9 @@
             // 
             // NoteListWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 732);
+            this.ClientSize = new System.Drawing.Size(396, 453);
             this.Controls.Add(this.lst);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "NoteListWindow";

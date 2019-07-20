@@ -70,7 +70,7 @@ namespace FormsUI.Workspaces
         /// <value>
         ///   <c>true</c> if the current workspace has been saved previously; otherwise, <c>false</c>.
         /// </value>
-        public bool HasBeenSaved
+        private bool HasBeenSaved
         {
             get { return !string.IsNullOrEmpty(workspaceFileName); }
         }
@@ -402,7 +402,7 @@ namespace FormsUI.Workspaces
         {
             this.WorkspaceCreated?.Invoke(this, e);
             HasChanged = true;
-            State = WorkspaceState.Clean;
+            State = WorkspaceState.Created;
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace FormsUI.Workspaces
         protected virtual void OnWorkspaceOpened(WorkspaceOpenedEventArgs e)
         {
             this.WorkspaceOpened?.Invoke(this, e);
-            State = WorkspaceState.Clean;
+            State = WorkspaceState.Opened;
         }
 
         /// <summary>

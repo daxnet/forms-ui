@@ -39,6 +39,7 @@ namespace FormsUI.Windows
 
             #region Initialize Workspace
             Workspace = CreateWorkspace();
+            
             if (Workspace != null)
             {
                 Workspace.WorkspaceChanged += OnWorkspaceChanged;
@@ -69,7 +70,7 @@ namespace FormsUI.Windows
 
         public DockableWindowManager WindowManager { get; }
 
-        public ToolActionManager ToolActionManager { get; }
+        private ToolActionManager ToolActionManager { get; }
 
         public Workspace Workspace { get; }
 
@@ -135,6 +136,36 @@ namespace FormsUI.Windows
         protected virtual void OnWorkspaceSaved(object sender, WorkspaceSavedEventArgs e) { }
 
         protected virtual void OnWorkspaceStateChanged(object sender, WorkspaceStateChangedEventArgs e) { }
+
+        protected bool RegisterTool(ToolAction toolAction)
+        {
+            if (!ToolActionManager.Contains(toolAction))
+            {
+                ToolActionManager.Add(toolAction);
+                return true;
+            }
+
+            return false;
+        }
+
+        protected ToolAction RegisterTool(string id, string text,
+            IEnumerable<ToolStripItem> associatedToolStrips,
+            Action<ToolAction> clickAction = null,
+            bool enabled = true,
+            bool visible = true,
+            string tooltipText = null,
+            Image image = null,
+            object tag = null,
+            Keys? shortcutKeys = null)
+        {
+            var toolAction = new ToolAction(id, this, text, associatedToolStrips, clickAction, enabled, visible, tooltipText, image, tag, shortcutKeys);
+            if (RegisterTool(toolAction))
+            {
+                return toolAction;
+            }
+
+            throw new InvalidOperationException($"Tool Action {id} already exists.");
+        }
 
         protected void RegisterToolWindow<TToolWindow>(IEnumerable<ToolStripItem> toolStripItems,
             string text,
