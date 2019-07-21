@@ -45,7 +45,7 @@ namespace FormsUI.Windows
 
         #region Private Constructors
 
-        private DockableWindow()
+        protected DockableWindow()
         {
             InitializeComponent();
         }

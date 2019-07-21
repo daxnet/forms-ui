@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,6 +23,7 @@ namespace FormsUI.Windows
 
         #region Private Fields
 
+        private readonly List<ToolStrip> toolStrips = new List<ToolStrip>();
         private readonly Dictionary<Type, ToolAction> toolWindowRegistrations = new Dictionary<Type, ToolAction>();
 
         #endregion Private Fields
@@ -31,7 +33,7 @@ namespace FormsUI.Windows
         /// <summary>
         /// Initializes a new instance of the <see cref="AppWindow"/> class.
         /// </summary>
-        public AppWindow()
+        protected AppWindow()
         {
             InitializeComponent();
 
@@ -39,7 +41,7 @@ namespace FormsUI.Windows
 
             #region Initialize Workspace
             Workspace = CreateWorkspace();
-            
+
             if (Workspace != null)
             {
                 Workspace.WorkspaceChanged += OnWorkspaceChanged;
@@ -60,6 +62,7 @@ namespace FormsUI.Windows
             #region Initialize Tool Action Manager
             ToolActionManager = new ToolActionManager();
             #endregion
+
         }
 
         #endregion Public Constructors
@@ -254,6 +257,83 @@ namespace FormsUI.Windows
             {
                 var toolAction = toolWindowRegistrations[windowType];
                 toolAction.Checked = @checked;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            RegisterToolStrips();
+        }
+
+        private void RegisterToolStrips()
+        {
+            var toolStripQuery = from f in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                                 where typeof(ToolStrip).IsAssignableFrom(f.FieldType) &&
+                                 !typeof(MenuStrip).IsAssignableFrom(f.FieldType) &&
+                                 !typeof(StatusStrip).IsAssignableFrom(f.FieldType)
+                                 select f;
+
+            foreach (var toolStripFieldInfo in toolStripQuery)
+            {
+                toolStrips.Add((ToolStrip)toolStripFieldInfo.GetValue(this));
+            }
+        }
+
+        private bool HasToolStrip => toolStrips.Count > 0;
+
+        private ToolStrip GetToolStripByName(string name)
+        {
+            ToolStrip targetToolStrip = null;
+            if (!string.IsNullOrEmpty(name))
+            {
+                targetToolStrip = toolStrips.FirstOrDefault(ts => string.Equals(ts.Name, name));
+            }
+            else
+            {
+                targetToolStrip = toolStrips.FirstOrDefault();
+            }
+
+            return targetToolStrip;
+        }
+
+        public void MergeTools(WindowTools tools)
+        {
+            if (tools?.IsEmpty ?? true)
+            {
+                return;
+            }
+
+            if (HasToolStrip && tools.MergingToolbar != null)
+            {
+                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
+                if (targetToolStrip == null)
+                {
+                    return;
+                }
+
+                ToolStripManager.Merge(tools.MergingToolbar.ToolStrip, targetToolStrip);
+                tools.MergingToolbar.ToolStrip.Hide();
+            }
+        }
+
+        public void RevertMerge(WindowTools tools)
+        {
+            if (tools?.IsEmpty ?? true)
+            {
+                return;
+            }
+
+            if (tools.MergingToolbar?.NeedHide ?? false)
+            {
+                tools.MergingToolbar.ToolStrip.Show();
+                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
+                if (targetToolStrip == null)
+                {
+                    return;
+                }
+
+                ToolStripManager.RevertMerge(targetToolStrip, tools.MergingToolbar.ToolStrip);
             }
         }
 

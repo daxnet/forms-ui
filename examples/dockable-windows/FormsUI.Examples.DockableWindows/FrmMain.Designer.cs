@@ -41,7 +41,7 @@
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNoteList = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.tbtnNew = new System.Windows.Forms.ToolStripButton();
             this.tbtnOpen = new System.Windows.Forms.ToolStripButton();
             this.tbtnSave = new System.Windows.Forms.ToolStripButton();
@@ -50,7 +50,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -154,20 +154,20 @@
             this.mnuNoteList.Size = new System.Drawing.Size(150, 22);
             this.mnuNoteList.Text = "My Note List";
             // 
-            // toolStrip1
+            // mainToolStrip
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbtnNew,
             this.tbtnOpen,
             this.tbtnSave,
             this.toolStripSeparator1,
             this.tbtnNodeList});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 25);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(926, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
+            this.mainToolStrip.Location = new System.Drawing.Point(0, 25);
+            this.mainToolStrip.Name = "mainToolStrip";
+            this.mainToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.mainToolStrip.Size = new System.Drawing.Size(926, 25);
+            this.mainToolStrip.TabIndex = 2;
+            this.mainToolStrip.Text = "toolStrip1";
             // 
             // tbtnNew
             // 
@@ -239,20 +239,20 @@
             this.ClientSize = new System.Drawing.Size(926, 575);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.mainToolStrip);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Controls.SetChildIndex(this.menuStrip1, 0);
-            this.Controls.SetChildIndex(this.toolStrip1, 0);
+            this.Controls.SetChildIndex(this.mainToolStrip, 0);
             this.Controls.SetChildIndex(this.statusStrip1, 0);
             this.Controls.SetChildIndex(this.dockPanel, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.mainToolStrip.ResumeLayout(false);
+            this.mainToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,7 +271,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuClose;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem mnuExit;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip mainToolStrip;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripButton tbtnNew;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;

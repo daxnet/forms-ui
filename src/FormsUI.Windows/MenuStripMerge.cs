@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FormsUI.Windows
 {
-    public sealed class MenuStripMerge : ToolStripMerge
+    public sealed class MenuStripMerge
     {
         /// <summary>
         /// Initializes a new instance of <c>MenuStripMerge</c> class.
@@ -25,11 +25,16 @@ namespace FormsUI.Windows
         /// <param name="needHide">A <see cref="bool"/> value which indicates whether the menu strip should be hidden when
         /// the hosting window is hidden.</param>
         public MenuStripMerge(ContextMenuStrip menuStrip, string positionTag, bool needHide)
-            : base(menuStrip, needHide)
         {
+            MenuStrip = menuStrip;
             PositionTag = positionTag;
+            NeedHide = needHide;
         }
 
         public string PositionTag { get; }
+
+        public ContextMenuStrip MenuStrip { get; }
+
+        public bool NeedHide { get; }
     }
 }

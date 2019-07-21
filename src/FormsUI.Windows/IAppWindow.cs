@@ -22,5 +22,9 @@ namespace FormsUI.Windows
         DockableWindowManager WindowManager { get; }
 
         DockPanel DockArea { get; }
+
+        void MergeTools(WindowTools tools);
+
+        void RevertMerge(WindowTools tools);
     }
 }

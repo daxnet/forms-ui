@@ -13,10 +13,11 @@ using System.Windows.Forms;
 
 namespace FormsUI.Examples.DockableWindows
 {
-    public partial class NoteListWindow : DockableWindow
+    public partial class NoteListWindow : ToolWindow
     {
         #region Private Fields
 
+        private readonly WindowTools windowTools;
         private NoteEditorModel appModel;
 
         #endregion Private Fields
@@ -27,6 +28,7 @@ namespace FormsUI.Examples.DockableWindows
             : base(appWindow)
         {
             InitializeComponent();
+            windowTools = new WindowTools(new ToolStripMerge(toolStrip1, false));
         }
 
         #endregion Public Constructors
@@ -50,6 +52,9 @@ namespace FormsUI.Examples.DockableWindows
             var note = appModel.Notes.First();
             OpenWindowForNote(note);
         }
+
+        protected override WindowTools WindowTools => windowTools;
+
         protected override void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
         {
             appModel = e.Model as NoteEditorModel;

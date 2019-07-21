@@ -62,6 +62,12 @@
     <Compile Include="DockableWindowEventArgs.cs" />
     <Compile Include="DockableWindowHiddenEventArgs.cs" />
     <Compile Include="DockableWindowShownEventArgs.cs" />
+    <Compile Include="DocumentWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DocumentWindow.Designer.cs">
+      <DependentUpon>DocumentWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="IAppWindow.cs" />
     <Compile Include="MenuStripMerge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +81,13 @@
     <Compile Include="DockableWindowManager.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ToolWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToolWindow.Designer.cs">
+      <DependentUpon>ToolWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

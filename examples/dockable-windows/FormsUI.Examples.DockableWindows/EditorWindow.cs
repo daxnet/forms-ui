@@ -13,10 +13,10 @@ using System.Windows.Forms;
 
 namespace FormsUI.Examples.DockableWindows
 {
-    public partial class EditorWindow : DockableWindow
+    public partial class EditorWindow : DocumentWindow
     {
         public EditorWindow(IAppWindow appWindow, Note note)
-            : base(appWindow, false)
+            : base(appWindow)
         {
             InitializeComponent();
             this.Note = note;

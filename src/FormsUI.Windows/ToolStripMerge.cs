@@ -17,30 +17,44 @@ namespace FormsUI.Windows
         /// </summary>
         /// <param name="toolStrip">The <see cref="ToolStrip"/> to be merged into the main window.</param>
         public ToolStripMerge(ToolStrip toolStrip)
-            : this(toolStrip, true)
+            : this(null, toolStrip, true)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <c>ToolStripMerge</c> class.
         /// </summary>
+        /// <param name="targetToolStripName">The name of the target tool strip to which the current tool strip will be merged.</param>
         /// <param name="toolStrip">The <see cref="ToolStrip"/> to be merged into the main window.</param>
-        /// <param name="autoHide">A <see cref="bool"/> value which indicates whether the merged tool strip should
+        /// <param name="needHide">A <see cref="bool"/> value which indicates whether the merged tool strip should
         /// be hidden when the window that contains this merged tool strip is hidden.</param>
-        public ToolStripMerge(ToolStrip toolStrip, bool autoHide)
+        public ToolStripMerge(string targetToolStripName, ToolStrip toolStrip, bool needHide)
         {
+            TargetToolStripName = targetToolStripName;
             ToolStrip = toolStrip;
-            AutoHide = autoHide;
+            NeedHide = needHide;
         }
+
+        public ToolStripMerge(ToolStrip toolStrip, bool needHide)
+            : this(null, toolStrip, needHide)
+        { }
 
         /// <summary>
         /// Gets a <see cref="bool"/> value which indicates whether the merged tool strip should
         /// be hidden when the window that contains this merged tool strip is hidden.
         /// </summary>
-        public bool AutoHide { get; }
+        public bool NeedHide { get; }
 
         /// <summary>
         /// Gets the <see cref="ToolStrip"/> instance that is to be merged into the main window.
         /// </summary>
         public ToolStrip ToolStrip { get; }
+
+        /// <summary>
+        /// Gets the name of the target tool strip to which the current tool strip will be merged.
+        /// </summary>
+        /// <value>
+        /// The name of the target tool strip.
+        /// </value>
+        public string TargetToolStripName { get; }
     }
 }
