@@ -39,7 +39,9 @@
             this.cmnuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.tbtnAddNote = new System.Windows.Forms.ToolStripButton();
+            this.tbtnDeleteNote = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +63,7 @@
             this.lst.UseCompatibleStateImageBehavior = false;
             this.lst.View = System.Windows.Forms.View.Details;
             this.lst.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.Lst_AfterLabelEdit);
+            this.lst.SelectedIndexChanged += new System.EventHandler(this.Lst_SelectedIndexChanged);
             this.lst.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Lst_MouseDoubleClick);
             // 
             // colNoteTitle
@@ -117,21 +120,44 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
+            this.tbtnAddNote,
+            this.tbtnDeleteNote,
+            this.toolStripSeparator1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(396, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // tbtnAddNote
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.tbtnAddNote.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbtnAddNote.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_add;
+            this.tbtnAddNote.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbtnAddNote.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.tbtnAddNote.MergeIndex = 4;
+            this.tbtnAddNote.Name = "tbtnAddNote";
+            this.tbtnAddNote.Size = new System.Drawing.Size(23, 22);
+            this.tbtnAddNote.Text = "toolStripButton2";
+            this.tbtnAddNote.Click += new System.EventHandler(this.CmnuAddNewNote_Click);
+            // 
+            // tbtnDeleteNote
+            // 
+            this.tbtnDeleteNote.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbtnDeleteNote.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_delete;
+            this.tbtnDeleteNote.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbtnDeleteNote.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.tbtnDeleteNote.MergeIndex = 5;
+            this.tbtnDeleteNote.Name = "tbtnDeleteNote";
+            this.tbtnDeleteNote.Size = new System.Drawing.Size(23, 22);
+            this.tbtnDeleteNote.Text = "toolStripButton3";
+            this.tbtnDeleteNote.Click += new System.EventHandler(this.CmnuDelete_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.MergeIndex = 6;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // NoteListWindow
             // 
@@ -162,6 +188,8 @@
         private System.Windows.Forms.ToolStripMenuItem cmnuDelete;
         private System.Windows.Forms.ToolStripMenuItem cmnuRename;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tbtnAddNote;
+        private System.Windows.Forms.ToolStripButton tbtnDeleteNote;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

@@ -15,6 +15,7 @@ namespace FormsUI.Examples.DockableWindows
 {
     public partial class NoteListWindow : ToolWindow
     {
+
         #region Private Fields
 
         private readonly WindowTools windowTools;
@@ -28,10 +29,16 @@ namespace FormsUI.Examples.DockableWindows
             : base(appWindow)
         {
             InitializeComponent();
-            windowTools = new WindowTools(new ToolStripMerge(toolStrip1, false));
+            windowTools = new WindowTools(new ToolStripMerge( toolStrip1, true));
         }
 
         #endregion Public Constructors
+
+        #region Protected Properties
+
+        protected override WindowTools WindowTools => windowTools;
+
+        #endregion Protected Properties
 
         #region Protected Methods
 
@@ -40,9 +47,19 @@ namespace FormsUI.Examples.DockableWindows
             base.OnFormClosed(e);
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            tbtnAddNote.Enabled = false;
+            tbtnDeleteNote.Enabled = false;
+        }
+
+
         protected override void OnWorkspaceClosed(object sender, EventArgs e)
         {
             lst.Items.Clear();
+            tbtnDeleteNote.Enabled = false;
+            tbtnAddNote.Enabled = false;
         }
 
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
@@ -51,16 +68,15 @@ namespace FormsUI.Examples.DockableWindows
             InitializeNoteList(appModel);
             var note = appModel.Notes.First();
             OpenWindowForNote(note);
+            tbtnAddNote.Enabled = true;
         }
-
-        protected override WindowTools WindowTools => windowTools;
-
         protected override void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
         {
             appModel = e.Model as NoteEditorModel;
             InitializeNoteList(appModel);
             var note = appModel.Notes.First();
             OpenWindowForNote(note);
+            tbtnAddNote.Enabled = true;
         }
 
         #endregion Protected Methods
@@ -79,6 +95,26 @@ namespace FormsUI.Examples.DockableWindows
             lst.Items.Add(lvi);
             appModel.Add(note);
             OpenWindowForNote(note);
+        }
+
+        private void CmnuDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                var selectedNote = lst.SelectedItems?[0]?.Tag as Note;
+                if (selectedNote != null)
+                {
+                    lst.Items.Remove(lst.SelectedItems?[0]);
+                    appModel.Delete(selectedNote);
+                    var editorWindow = AppWindow.WindowManager.GetFirstWindow<EditorWindow>(w => w.Note.Equals(selectedNote));
+                    editorWindow?.Close();
+                }
+            }
+        }
+
+        private void CmnuRename_Click(object sender, EventArgs e)
+        {
+            lst.SelectedItems?[0]?.BeginEdit();
         }
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
@@ -170,6 +206,11 @@ namespace FormsUI.Examples.DockableWindows
             }
         }
 
+        private void Lst_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbtnDeleteNote.Enabled = lst.SelectedItems.Count > 0;
+        }
+
         private void OpenWindowForNote(Note note)
         {
             var editorWindow = AppWindow.WindowManager.GetFirstWindow<EditorWindow>(w => w.Note.Title == note.Title);
@@ -192,25 +233,5 @@ namespace FormsUI.Examples.DockableWindows
         }
 
         #endregion Private Methods
-
-        private void CmnuRename_Click(object sender, EventArgs e)
-        {
-            lst.SelectedItems?[0]?.BeginEdit();
-        }
-
-        private void CmnuDelete_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-            {
-                var selectedNote = lst.SelectedItems?[0]?.Tag as Note;
-                if (selectedNote != null)
-                {
-                    lst.Items.Remove(lst.SelectedItems?[0]);
-                    appModel.Delete(selectedNote);
-                    var editorWindow = AppWindow.WindowManager.GetFirstWindow<EditorWindow>(w => w.Note.Equals(selectedNote));
-                    editorWindow?.Close();
-                }
-            }
-        }
     }
 }

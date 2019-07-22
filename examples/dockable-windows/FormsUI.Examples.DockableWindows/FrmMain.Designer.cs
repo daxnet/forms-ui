@@ -49,8 +49,12 @@
             this.tbtnNodeList = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.menuStrip1.SuspendLayout();
             this.mainToolStrip.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
+            this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -156,16 +160,17 @@
             // 
             // mainToolStrip
             // 
+            this.mainToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbtnNew,
             this.tbtnOpen,
             this.tbtnSave,
             this.toolStripSeparator1,
             this.tbtnNodeList});
-            this.mainToolStrip.Location = new System.Drawing.Point(0, 25);
+            this.mainToolStrip.Location = new System.Drawing.Point(3, 0);
             this.mainToolStrip.Name = "mainToolStrip";
             this.mainToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.mainToolStrip.Size = new System.Drawing.Size(926, 25);
+            this.mainToolStrip.Size = new System.Drawing.Size(142, 25);
             this.mainToolStrip.TabIndex = 2;
             this.mainToolStrip.Text = "toolStrip1";
             // 
@@ -227,32 +232,54 @@
             // 
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.dockPanel.Location = new System.Drawing.Point(0, 50);
+            this.dockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+            this.dockPanel.Location = new System.Drawing.Point(0, 0);
             this.dockPanel.Name = "dockPanel";
             this.dockPanel.Size = new System.Drawing.Size(926, 503);
             this.dockPanel.TabIndex = 4;
+            // 
+            // toolStripContainer1
+            // 
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(926, 503);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 25);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.Size = new System.Drawing.Size(926, 528);
+            this.toolStripContainer1.TabIndex = 6;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            // 
+            // toolStripContainer1.TopToolStripPanel
+            // 
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.mainToolStrip);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(926, 575);
-            this.Controls.Add(this.dockPanel);
+            this.Controls.Add(this.toolStripContainer1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.mainToolStrip);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Controls.SetChildIndex(this.menuStrip1, 0);
-            this.Controls.SetChildIndex(this.mainToolStrip, 0);
             this.Controls.SetChildIndex(this.statusStrip1, 0);
-            this.Controls.SetChildIndex(this.dockPanel, 0);
+            this.Controls.SetChildIndex(this.toolStripContainer1, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.mainToolStrip.ResumeLayout(false);
             this.mainToolStrip.PerformLayout();
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer1.TopToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,6 +308,7 @@
         private System.Windows.Forms.ToolStripButton tbtnNodeList;
         private System.Windows.Forms.ToolStripButton tbtnOpen;
         private System.Windows.Forms.ToolStripButton tbtnSave;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
     }
 }
 

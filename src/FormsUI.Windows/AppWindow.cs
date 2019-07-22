@@ -28,7 +28,7 @@ namespace FormsUI.Windows
 
         #endregion Private Fields
 
-        #region Public Constructors
+        #region Protected Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppWindow"/> class.
@@ -65,7 +65,7 @@ namespace FormsUI.Windows
 
         }
 
-        #endregion Public Constructors
+        #endregion Protected Constructors
 
         #region Public Properties
 
@@ -73,11 +73,67 @@ namespace FormsUI.Windows
 
         public DockableWindowManager WindowManager { get; }
 
-        private ToolActionManager ToolActionManager { get; }
-
         public Workspace Workspace { get; }
 
         #endregion Public Properties
+
+        #region Private Properties
+
+        private bool HasToolStrip => toolStrips.Count > 0;
+        private bool HasMainMenu => !(MainMenuStrip == null);
+        private ToolActionManager ToolActionManager { get; }
+
+        #endregion Private Properties
+
+        #region Public Methods
+
+        public void MergeTools(WindowTools tools)
+        {
+            if (tools?.IsEmpty ?? true)
+            {
+                return;
+            }
+
+            if (HasToolStrip && tools.MergingToolbar != null)
+            {
+                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
+                if (targetToolStrip == null)
+                {
+                    return;
+                }
+
+                ToolStripManager.Merge(tools.MergingToolbar.ToolStrip, targetToolStrip);
+
+                tools.MergingToolbar.ToolStrip.Hide();
+            }
+
+            if (HasMainMenu && tools.MergingMenus?.Count() > 0)
+            {
+                // foreach (var )
+            }
+        }
+
+        public void RevertMerge(WindowTools tools)
+        {
+            if (tools?.IsEmpty ?? true)
+            {
+                return;
+            }
+
+            if (tools.MergingToolbar?.NeedHide ?? false)
+            {
+                tools.MergingToolbar.ToolStrip.Show();
+                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
+                if (targetToolStrip == null)
+                {
+                    return;
+                }
+
+                ToolStripManager.RevertMerge(targetToolStrip, tools.MergingToolbar.ToolStrip);
+            }
+        }
+
+        #endregion Public Methods
 
         #region Protected Methods
 
@@ -116,6 +172,12 @@ namespace FormsUI.Windows
             {
                 e.Cancel = false;
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            RegisterToolStrips();
         }
 
         protected virtual void OnWindowHidden(object sender, DockableWindowHiddenEventArgs e)
@@ -229,6 +291,35 @@ namespace FormsUI.Windows
 
         #region Private Methods
 
+        private ToolStrip GetToolStripByName(string name)
+        {
+            ToolStrip targetToolStrip = null;
+            if (!string.IsNullOrEmpty(name))
+            {
+                targetToolStrip = toolStrips.FirstOrDefault(ts => string.Equals(ts.Name, name));
+            }
+            else
+            {
+                targetToolStrip = toolStrips.FirstOrDefault();
+            }
+
+            return targetToolStrip;
+        }
+
+        private void RegisterToolStrips()
+        {
+            var toolStripQuery = from f in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                                 where typeof(ToolStrip).IsAssignableFrom(f.FieldType) &&
+                                 !typeof(MenuStrip).IsAssignableFrom(f.FieldType) &&
+                                 !typeof(StatusStrip).IsAssignableFrom(f.FieldType)
+                                 select f;
+
+            foreach (var toolStripFieldInfo in toolStripQuery)
+            {
+                toolStrips.Add((ToolStrip)toolStripFieldInfo.GetValue(this));
+            }
+        }
+
         private void ToggleToolWindowAction(ToolAction toolAction)
         {
             using (new LengthyOperation(this))
@@ -260,84 +351,6 @@ namespace FormsUI.Windows
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            RegisterToolStrips();
-        }
-
-        private void RegisterToolStrips()
-        {
-            var toolStripQuery = from f in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-                                 where typeof(ToolStrip).IsAssignableFrom(f.FieldType) &&
-                                 !typeof(MenuStrip).IsAssignableFrom(f.FieldType) &&
-                                 !typeof(StatusStrip).IsAssignableFrom(f.FieldType)
-                                 select f;
-
-            foreach (var toolStripFieldInfo in toolStripQuery)
-            {
-                toolStrips.Add((ToolStrip)toolStripFieldInfo.GetValue(this));
-            }
-        }
-
-        private bool HasToolStrip => toolStrips.Count > 0;
-
-        private ToolStrip GetToolStripByName(string name)
-        {
-            ToolStrip targetToolStrip = null;
-            if (!string.IsNullOrEmpty(name))
-            {
-                targetToolStrip = toolStrips.FirstOrDefault(ts => string.Equals(ts.Name, name));
-            }
-            else
-            {
-                targetToolStrip = toolStrips.FirstOrDefault();
-            }
-
-            return targetToolStrip;
-        }
-
-        public void MergeTools(WindowTools tools)
-        {
-            if (tools?.IsEmpty ?? true)
-            {
-                return;
-            }
-
-            if (HasToolStrip && tools.MergingToolbar != null)
-            {
-                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
-                if (targetToolStrip == null)
-                {
-                    return;
-                }
-
-                ToolStripManager.Merge(tools.MergingToolbar.ToolStrip, targetToolStrip);
-                tools.MergingToolbar.ToolStrip.Hide();
-            }
-        }
-
-        public void RevertMerge(WindowTools tools)
-        {
-            if (tools?.IsEmpty ?? true)
-            {
-                return;
-            }
-
-            if (tools.MergingToolbar?.NeedHide ?? false)
-            {
-                tools.MergingToolbar.ToolStrip.Show();
-                var targetToolStrip = GetToolStripByName(tools.MergingToolbar.TargetToolStripName);
-                if (targetToolStrip == null)
-                {
-                    return;
-                }
-
-                ToolStripManager.RevertMerge(targetToolStrip, tools.MergingToolbar.ToolStrip);
-            }
-        }
-
         #endregion Private Methods
-
     }
 }

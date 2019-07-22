@@ -17,6 +17,7 @@ namespace FormsUI.Examples.DockableWindows
 {
     public partial class FrmMain : AppWindow
     {
+
         #region Private Fields
 
         private ToolAction closeTool;
@@ -32,9 +33,6 @@ namespace FormsUI.Examples.DockableWindows
         public FrmMain()
         {
             InitializeComponent();
-            RegisterTools();
-            RegisterToolWindows();
-            ResetMenuStates();
         }
 
         #endregion Public Constructors
@@ -49,11 +47,18 @@ namespace FormsUI.Examples.DockableWindows
 
         protected override Workspace CreateWorkspace() => new NoteEditorWorkspace();
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            RegisterTools();
+            RegisterToolWindows();
+            ResetMenuStates();
+        }
+
         protected override void OnWorkspaceClosed(object sender, EventArgs e)
         {
             WindowManager.CloseWindows<EditorWindow>();
         }
-
         protected override void OnWorkspaceCreated(object sender, WorkspaceCreatedEventArgs e)
         {
             WindowManager.GetFirstWindow<NoteListWindow>()?.Show();
@@ -153,5 +158,6 @@ namespace FormsUI.Examples.DockableWindows
         }
 
         #endregion Private Methods
+
     }
 }
