@@ -200,7 +200,7 @@ namespace FormsUI.Windows
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (Workspace.IsActive)
+            if (Workspace?.IsActive ?? false)
             {
                 e.Cancel = !Workspace.Close();
             }
