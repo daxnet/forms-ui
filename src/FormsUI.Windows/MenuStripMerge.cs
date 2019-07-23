@@ -13,9 +13,9 @@ namespace FormsUI.Windows
         /// Initializes a new instance of <c>MenuStripMerge</c> class.
         /// </summary>
         /// <param name="menuStrip">The menu strip to be merged into main menu.</param>
-        /// <param name="positionTag">The position in the main menu where the menu strip should be merged.</param>
-        public MenuStripMerge(ContextMenuStrip menuStrip, string positionTag)
-            : this(menuStrip, positionTag, true) { }
+        /// <param name="targetName">The position in the main menu where the menu strip should be merged.</param>
+        public MenuStripMerge(ContextMenuStrip menuStrip, string targetName)
+            : this(menuStrip, targetName, true) { }
 
         /// <summary>
         /// Initializes a new instance of <c>MenuStripMerge</c> class.
@@ -24,14 +24,14 @@ namespace FormsUI.Windows
         /// <param name="position">The position in the main menu where the menu strip should be merged.</param>
         /// <param name="needHide">A <see cref="bool"/> value which indicates whether the menu strip should be hidden when
         /// the hosting window is hidden.</param>
-        public MenuStripMerge(ContextMenuStrip menuStrip, string positionTag, bool needHide)
+        public MenuStripMerge(ContextMenuStrip menuStrip, string targetName, bool needHide)
         {
             MenuStrip = menuStrip;
-            PositionTag = positionTag;
+            TargetName = targetName;
             NeedHide = needHide;
         }
 
-        public string PositionTag { get; }
+        public string TargetName { get; }
 
         public ContextMenuStrip MenuStrip { get; }
 

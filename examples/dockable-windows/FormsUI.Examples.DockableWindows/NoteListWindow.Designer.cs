@@ -79,27 +79,27 @@
             this.cmnuRename,
             this.cmnuDelete});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(164, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 98);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // cmnuAddNewNote
             // 
             this.cmnuAddNewNote.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_add;
             this.cmnuAddNewNote.Name = "cmnuAddNewNote";
-            this.cmnuAddNewNote.Size = new System.Drawing.Size(163, 22);
+            this.cmnuAddNewNote.Size = new System.Drawing.Size(180, 22);
             this.cmnuAddNewNote.Text = "Add New Note";
             this.cmnuAddNewNote.Click += new System.EventHandler(this.CmnuAddNewNote_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // cmnuRename
             // 
             this.cmnuRename.Name = "cmnuRename";
             this.cmnuRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.cmnuRename.Size = new System.Drawing.Size(163, 22);
+            this.cmnuRename.Size = new System.Drawing.Size(180, 22);
             this.cmnuRename.Text = "Rename";
             this.cmnuRename.Click += new System.EventHandler(this.CmnuRename_Click);
             // 
@@ -107,7 +107,8 @@
             // 
             this.cmnuDelete.Image = global::FormsUI.Examples.DockableWindows.Properties.Resources.page_white_delete;
             this.cmnuDelete.Name = "cmnuDelete";
-            this.cmnuDelete.Size = new System.Drawing.Size(163, 22);
+            this.cmnuDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.cmnuDelete.Size = new System.Drawing.Size(180, 22);
             this.cmnuDelete.Text = "Delete...";
             this.cmnuDelete.Click += new System.EventHandler(this.CmnuDelete_Click);
             // 

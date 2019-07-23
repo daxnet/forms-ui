@@ -29,7 +29,7 @@ namespace FormsUI.Examples.DockableWindows
             : base(appWindow)
         {
             InitializeComponent();
-            windowTools = new WindowTools(new ToolStripMerge( toolStrip1, true));
+            windowTools = new WindowTools(new ToolStripMerge( toolStrip1, true), new[] { new MenuStripMerge(contextMenuStrip1, "mnuEdit") });
         }
 
         #endregion Public Constructors
@@ -50,6 +50,9 @@ namespace FormsUI.Examples.DockableWindows
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            cmnuAddNewNote.Enabled = false;
+            cmnuDelete.Enabled = false;
+            cmnuRename.Enabled = false;
             tbtnAddNote.Enabled = false;
             tbtnDeleteNote.Enabled = false;
         }
@@ -58,6 +61,9 @@ namespace FormsUI.Examples.DockableWindows
         protected override void OnWorkspaceClosed(object sender, EventArgs e)
         {
             lst.Items.Clear();
+            cmnuAddNewNote.Enabled = false;
+            cmnuDelete.Enabled = false;
+            cmnuRename.Enabled = false;
             tbtnDeleteNote.Enabled = false;
             tbtnAddNote.Enabled = false;
         }
@@ -69,6 +75,7 @@ namespace FormsUI.Examples.DockableWindows
             var note = appModel.Notes.First();
             OpenWindowForNote(note);
             tbtnAddNote.Enabled = true;
+            cmnuAddNewNote.Enabled = true;
         }
         protected override void OnWorkspaceOpened(object sender, WorkspaceOpenedEventArgs e)
         {
@@ -77,6 +84,7 @@ namespace FormsUI.Examples.DockableWindows
             var note = appModel.Notes.First();
             OpenWindowForNote(note);
             tbtnAddNote.Enabled = true;
+            cmnuAddNewNote.Enabled = true;
         }
 
         #endregion Protected Methods
@@ -209,6 +217,8 @@ namespace FormsUI.Examples.DockableWindows
         private void Lst_SelectedIndexChanged(object sender, EventArgs e)
         {
             tbtnDeleteNote.Enabled = lst.SelectedItems.Count > 0;
+            cmnuDelete.Enabled= lst.SelectedItems.Count > 0;
+            cmnuRename.Enabled= lst.SelectedItems.Count > 0;
         }
 
         private void OpenWindowForNote(Note note)

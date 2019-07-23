@@ -109,7 +109,21 @@ namespace FormsUI.Windows
 
             if (HasMainMenu && tools.MergingMenus?.Count() > 0)
             {
-                // foreach (var )
+                foreach (var mergingMenu in tools.MergingMenus)
+                {
+                    var matchingTargetMenus = MainMenuStrip.Items
+                        .Find(mergingMenu.TargetName, true)
+                        .Where(m => m is ToolStripMenuItem)
+                        .Select(m => m as ToolStripMenuItem);
+
+                    if (matchingTargetMenus?.Count() > 0)
+                    {
+                        foreach(var matchingTarget in matchingTargetMenus)
+                        {
+                            ToolStripManager.Merge(mergingMenu.MenuStrip, matchingTarget.DropDown);
+                        }
+                    }
+                }
             }
         }
 
@@ -130,6 +144,28 @@ namespace FormsUI.Windows
                 }
 
                 ToolStripManager.RevertMerge(targetToolStrip, tools.MergingToolbar.ToolStrip);
+            }
+
+            if (HasMainMenu && tools.MergingMenus?.Count() > 0)
+            {
+                foreach (var mergingMenu in tools.MergingMenus)
+                {
+                    if (mergingMenu.NeedHide)
+                    {
+                        var matchingTargetMenus = MainMenuStrip.Items
+                        .Find(mergingMenu.TargetName, true)
+                        .Where(m => m is ToolStripMenuItem)
+                        .Select(m => m as ToolStripMenuItem);
+
+                        if (matchingTargetMenus?.Count() > 0)
+                        {
+                            foreach (var matchingTarget in matchingTargetMenus)
+                            {
+                                ToolStripManager.RevertMerge(matchingTarget.DropDown, mergingMenu.MenuStrip);
+                            }
+                        }
+                    }
+                }
             }
         }
 
